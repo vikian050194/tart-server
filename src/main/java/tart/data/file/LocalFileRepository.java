@@ -17,7 +17,7 @@ import tart.domain.file.*;
 public class LocalFileRepository implements FileRepository {
 
     private DirectoryDescription mapFileToDirectoryDescription(File f) {
-        return new DirectoryDescription(List.of(f.getAbsolutePath().split(File.separator)));
+        return new DirectoryDescription(List.of(f.getAbsolutePath().split(File.separator)).stream().filter(d -> !d.isEmpty()).toList());
     }
 
     @Override
@@ -48,7 +48,7 @@ public class LocalFileRepository implements FileRepository {
 
     private FileDescription mapFileToFileDescription(File f) {
         var name = f.getName();
-        var dirs = List.of(f.getParentFile().getAbsolutePath().split(File.separator));
+        var dirs = List.of(f.getParentFile().getAbsolutePath().split(File.separator)).stream().filter(d -> !d.isEmpty()).toList();
         return new FileDescription(dirs, name);
     }
 

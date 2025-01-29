@@ -25,6 +25,8 @@
 - [x] Use multiple file matchers
 - [x] Setup "transporter" target on first usage
 - [ ] Migrate to Web API
+- [ ] Hide system directories by default
+- [ ] Add option to show system directories
 - [ ] Add wildcard directory filtering mode
 - [ ] Add vertical/horizontal filter
 - [ ] Add "transporter" buttons re-set with Ctrl

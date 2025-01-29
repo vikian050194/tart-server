@@ -8,6 +8,7 @@ import java.net.URI;
 import java.util.List;
 import tart.app.api.*;
 import tart.app.errors.*;
+import tart.domain.file.DirectoryDescription;
 import tart.domain.file.FileService;
 
 public class FileHandler extends Handler {
@@ -40,8 +41,9 @@ public class FileHandler extends Handler {
 
         if ("GET".equals(exchange.getRequestMethod())) {
             var e = doGet(exchange.getRequestURI());
-//            response = super.writeResponse(e.getBody());
-            response = e.getBody();
+            response = super.writeResponse(e.getBody());
+            // TODO split file handler that returns bytes and all other endpoints that return JSON
+//            response = e.getBody();
             exchange.getResponseHeaders().putAll(e.getHeaders());
             exchange.sendResponseHeaders(e.getStatusCode().getCode(), response.length);
         } else {
@@ -57,7 +59,7 @@ public class FileHandler extends Handler {
         exchange.close();
     }
 
-    private ResponseEntity<byte[]> doGet(URI uri) throws IOException {
+    private ResponseEntity<List<DirectoryDescription>> doGet(URI uri) throws IOException {
         var path = uri.getRawPath();
         var foo = path.substring(url().length());
 
@@ -71,15 +73,20 @@ public class FileHandler extends Handler {
                 if (dir.isEmpty()) {
                     var dirs = imageService.getDirectories();
 
-                    return new ResponseEntity<>(dirs.toString().getBytes(),
-                            getHeaders(Constants.CONTENT_TYPE, Constants.TEXT_HTML), StatusCode.OK);
+                    return new ResponseEntity<>(dirs,
+                            getHeaders(Constants.CONTENT_TYPE, Constants.APPLICATION_JSON), StatusCode.OK);
                 }
 
                 // TODO name is optional
-                var file = imageService.getFileData(dir, name);
+//                var file = imageService.getFileData(dir, name);
+//
+//                return new ResponseEntity<>(file.getData(),
+//                        getHeaders(Constants.CONTENT_TYPE, Constants.IMAGE_JPEG), StatusCode.OK);
+                var dirs = imageService.getDirectories();
 
-                return new ResponseEntity<>(file.getData(),
-                        getHeaders(Constants.CONTENT_TYPE, Constants.IMAGE_JPEG), StatusCode.OK);
+                return new ResponseEntity<>(dirs,
+                        getHeaders(Constants.CONTENT_TYPE, Constants.APPLICATION_JSON), StatusCode.OK);
+
             }
             default:
                 throw new AssertionError();
