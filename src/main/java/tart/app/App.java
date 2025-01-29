@@ -23,7 +23,6 @@ public final class App {
         } else {
             server = HttpServer.create(new InetSocketAddress("127.0.0.1", httpPort), 0);
         }
-//        HttpContextHelper.initializeDummyEndpoints(server::createContext);
     }
 
     private void setAuthenticator(HttpContext c) {
