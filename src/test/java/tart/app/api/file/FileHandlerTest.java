@@ -1,4 +1,4 @@
-package tart.app.api.hello;
+package tart.app.api.file;
 
 import java.io.IOException;
 import java.net.URI;
@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import tart.app.api.BaseApiTest;
 
-class HelloHandlerTest extends BaseApiTest {
+class FileHandlerTest extends BaseApiTest {
 
     @Test
     void testAnonymousCall() throws IOException, InterruptedException, URISyntaxException {

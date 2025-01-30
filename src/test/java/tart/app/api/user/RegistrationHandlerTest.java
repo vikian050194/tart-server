@@ -1,4 +1,4 @@
-package tart.app.api.hello;
+package tart.app.api.user;
 
 import java.io.IOException;
 import java.net.URI;
@@ -10,8 +10,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import tart.app.api.BaseApiTest;
 
-class HelloHandlerTest extends BaseApiTest {
+class RegistrationHandlerTest extends BaseApiTest {
 
+    // TODO update tests
     @Test
     void testAnonymousCall() throws IOException, InterruptedException, URISyntaxException {
         // Arrange

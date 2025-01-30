@@ -13,7 +13,7 @@ public class LocalFileRepositoryTests {
     public void getDirectoriesAtHome() {
         // Arrange
         FileRepository fr = new LocalFileRepository();
-        var expectedSize = 37;
+        var expectedSize = 36;
 
         // Act
         var actualSize = fr.getDirectories().size();
