@@ -8,26 +8,26 @@ import java.net.URI;
 import java.util.List;
 import tart.app.api.*;
 import tart.app.errors.*;
-import tart.domain.file.DirectoryDescription;
+import tart.domain.file.DirectoryInfo;
 import tart.domain.file.FileService;
 
-public class FileHandler extends Handler {
+public class DataHandler extends Handler {
 
-    private final FileService imageService;
+    private final FileService fileService;
 
-    public FileHandler(
-            FileService imageService,
+    public DataHandler(
+            FileService fileService,
             ObjectMapper objectMapper,
             GlobalExceptionHandler exceptionHandler
     ) {
         super(objectMapper, exceptionHandler);
-        this.imageService = imageService;
+        this.fileService = fileService;
     }
 
     @Override
     public String url() {
         // TODO is it better to store or return array?
-        return URL_PREFIX + "file";
+        return URL_PREFIX + "data";
     }
 
     @Override
@@ -59,7 +59,7 @@ public class FileHandler extends Handler {
         exchange.close();
     }
 
-    private ResponseEntity<List<DirectoryDescription>> doGet(URI uri) throws IOException {
+    private ResponseEntity<List<DirectoryInfo>> doGet(URI uri) throws IOException {
         var path = uri.getRawPath();
         var foo = path.substring(url().length());
 
@@ -71,18 +71,18 @@ public class FileHandler extends Handler {
 //                var name = "";
 
                 if (dir.isEmpty()) {
-                    var dirs = imageService.getDirectories();
+                    var dirs = fileService.getDirectories();
 
                     return new ResponseEntity<>(dirs,
                             getHeaders(Constants.CONTENT_TYPE, Constants.APPLICATION_JSON), StatusCode.OK);
                 }
 
                 // TODO name is optional
-//                var file = imageService.getFileData(dir, name);
+//                var file = fileService.getFileData(dir, name);
 //
 //                return new ResponseEntity<>(file.getData(),
 //                        getHeaders(Constants.CONTENT_TYPE, Constants.IMAGE_JPEG), StatusCode.OK);
-                var dirs = imageService.getDirectories();
+                var dirs = fileService.getDirectories();
 
                 return new ResponseEntity<>(dirs,
                         getHeaders(Constants.CONTENT_TYPE, Constants.APPLICATION_JSON), StatusCode.OK);

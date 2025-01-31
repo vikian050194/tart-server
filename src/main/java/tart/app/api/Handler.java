@@ -22,7 +22,7 @@ public abstract class Handler {
 
     private final ObjectMapper objectMapper;
     private final GlobalExceptionHandler exceptionHandler;
-    protected static final String URL_PREFIX = "/api/";
+    protected static final String URL_PREFIX = "/";
 
     public Handler(ObjectMapper objectMapper,
             GlobalExceptionHandler exceptionHandler) {

@@ -6,19 +6,22 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import tart.app.api.BaseApiTest;
+import tart.domain.file.DirectoryInfo;
 
-class FileHandlerTest extends BaseApiTest {
+class InfoHandlerTest extends BaseApiTest {
 
     @Test
     void testAnonymousCall() throws IOException, InterruptedException, URISyntaxException {
         // Arrange
+
         var expectedStatus = 200;
-        var expectedBody = "Hello, Anonymous!";
+        var expectedBody = List.of(new DirectoryInfo(List.of("foo", "bar", "baz")));
         var client = HttpClient.newHttpClient();
-        var uri = new URI("%s/%s".formatted(baseAddress, "hello"));
+        var uri = new URI("%s/%s".formatted(baseAddress, "info"));
 
         // Act
         var response = client.send(
@@ -36,7 +39,7 @@ class FileHandlerTest extends BaseApiTest {
         var expectedStatus = 200;
         var expectedBody = "Hello, V!";
         var client = HttpClient.newHttpClient();
-        var uri = new URI("%s/%s?name=V".formatted(baseAddress, "hello"));
+        var uri = new URI("%s/%s?dir=root".formatted(baseAddress, "info"));
 
         // Act
         var response = client.send(

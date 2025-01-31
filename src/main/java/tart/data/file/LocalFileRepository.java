@@ -16,12 +16,12 @@ import tart.domain.file.*;
 
 public class LocalFileRepository implements FileRepository {
 
-    private DirectoryDescription mapFileToDirectoryDescription(File f) {
-        return new DirectoryDescription(List.of(f.getAbsolutePath().split(File.separator)).stream().filter(d -> !d.isEmpty()).toList());
+    private DirectoryInfo mapFileToDirectoryDescription(File f) {
+        return new DirectoryInfo(List.of(f.getAbsolutePath().split(File.separator)).stream().filter(d -> !d.isEmpty()).toList());
     }
 
     @Override
-    public List<DirectoryDescription> getDirectories() {
+    public List<DirectoryInfo> getDirectories() {
         var home = System.getProperty("user.home");
         var root = new File(home);
 
@@ -34,8 +34,8 @@ public class LocalFileRepository implements FileRepository {
     }
 
     @Override
-    public List<DirectoryDescription> getDirectories(DirectoryDescription dd) {
-        var home = getFullName(dd);
+    public List<DirectoryInfo> getDirectories(DirectoryInfo di) {
+        var home = getFullName(di);
         var root = new File(home);
 
         var result = Stream.of(root.listFiles())
@@ -46,14 +46,14 @@ public class LocalFileRepository implements FileRepository {
         return result;
     }
 
-    private FileDescription mapFileToFileDescription(File f) {
+    private FileInfo mapFileToFileDescription(File f) {
         var name = f.getName();
         var dirs = List.of(f.getParentFile().getAbsolutePath().split(File.separator)).stream().filter(d -> !d.isEmpty()).toList();
-        return new FileDescription(dirs, name);
+        return new FileInfo(dirs, name);
     }
 
     @Override
-    public List<FileDescription> getDescriptions(DirectoryDescription dd) {
+    public List<FileInfo> getDescriptions(DirectoryInfo dd) {
         var home = getFullName(dd);
         var root = new File(home);
 
@@ -65,7 +65,7 @@ public class LocalFileRepository implements FileRepository {
         return result;
     }
 
-    private String getFullName(NodeDescription nd) {
+    private String getFullName(NodeInfo nd) {
         var fullName = new ArrayList<String>();
         fullName.add(File.separator);
         fullName.addAll(nd.getDirs());
@@ -74,20 +74,20 @@ public class LocalFileRepository implements FileRepository {
     }
 
     @Override
-    public FileData getData(FileDescription fd) throws IOException, FileNotFoundException {
-        RandomAccessFile raf = new RandomAccessFile(getFullName(fd), "r");
+    public FileData getData(FileInfo fi) throws IOException, FileNotFoundException {
+        RandomAccessFile raf = new RandomAccessFile(getFullName(fi), "r");
         byte[] bytes = new byte[(int) raf.length()];
         raf.readFully(bytes);
         return new FileData(bytes);
     }
 
     @Override
-    public boolean update(FileDescription f) {
+    public boolean update(FileInfo fi) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public boolean delete(FileDescription f) {
+    public boolean delete(FileInfo fi) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -164,7 +164,7 @@ public class LocalFileRepository implements FileRepository {
         targetFile.getFile().delete();
     }
 
-    public boolean inspect(DirectoryDescription dir, List<FileMatcher> matchers) {
+    public boolean inspect(DirectoryInfo dir, List<FileMatcher> matchers) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

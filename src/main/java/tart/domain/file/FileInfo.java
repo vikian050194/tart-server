@@ -3,14 +3,14 @@ package tart.domain.file;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO is it better to make parent and child classes instead of interface NodeDescription?
-public class FileDescription implements NodeDescription {
+// TODO is it better to make parent and child classes instead of interface NodeInfo?
+public class FileInfo implements NodeInfo {
 
     private final String name;
     private final List<String> dirs;
     private static final String EXTENSION_DELIMITER = ".";
 
-    public FileDescription(List<String> d, String n) {
+    public FileInfo(List<String> d, String n) {
         name = n;
         dirs = d;
     }

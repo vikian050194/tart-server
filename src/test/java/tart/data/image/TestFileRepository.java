@@ -8,32 +8,32 @@ import tart.domain.file.*;
 public class TestFileRepository implements FileRepository {
 
     @Override
-    public List<DirectoryDescription> getDirectories() {
+    public List<DirectoryInfo> getDirectories() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public List<DirectoryDescription> getDirectories(DirectoryDescription d) {
+    public List<DirectoryInfo> getDirectories(DirectoryInfo d) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public List<FileDescription> getDescriptions(DirectoryDescription d) {
+    public List<FileInfo> getDescriptions(DirectoryInfo d) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public FileData getData(FileDescription f) throws IOException, FileNotFoundException {
+    public FileData getData(FileInfo f) throws IOException, FileNotFoundException {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public boolean update(FileDescription f) {
+    public boolean update(FileInfo f) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public boolean delete(FileDescription f) {
+    public boolean delete(FileInfo f) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

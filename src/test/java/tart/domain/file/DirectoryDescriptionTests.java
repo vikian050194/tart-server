@@ -11,7 +11,7 @@ public class DirectoryDescriptionTests {
         // Arrange
         var expectedName = "baz";
         var dirs = List.of("foo", "bar", "baz");
-        NodeDescription d = new DirectoryDescription(dirs);
+        NodeInfo d = new DirectoryInfo(dirs);
 
         // Act
         var actualName = d.getName();
@@ -25,7 +25,7 @@ public class DirectoryDescriptionTests {
         // Arrange
         var expectedDirs = List.of("foo", "bar");
         var dirs = List.of("foo", "bar", "baz");
-        NodeDescription d = new DirectoryDescription(dirs);
+        NodeInfo d = new DirectoryInfo(dirs);
 
         // Act
         var actualDirs = d.getDirs();
@@ -39,7 +39,7 @@ public class DirectoryDescriptionTests {
         // Arrange
         var expectedFullName = List.of("foo", "bar", "baz");
         var dirs = List.of("foo", "bar", "baz");
-        NodeDescription d = new DirectoryDescription(dirs);
+        NodeInfo d = new DirectoryInfo(dirs);
 
         // Act
         var actualFullName = d.getFullName();

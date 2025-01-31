@@ -2,7 +2,7 @@ package tart.domain.file;
 
 import java.util.List;
 
-public interface NodeDescription {
+public interface NodeInfo {
 
     public String getName();
 

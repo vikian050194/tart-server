@@ -8,8 +8,9 @@ import java.net.InetSocketAddress;
 import java.util.LinkedList;
 import tart.app.api.Handler;
 import tart.app.api.file.*;
-import tart.app.api.hello.*;
-import tart.app.api.user.*;
+import tart.app.api.hello.HelloHandler;
+import tart.app.api.user.RegistrationHandler;
+import tart.app.dependency.*;
 
 public final class App {
 
@@ -48,7 +49,9 @@ public final class App {
         var handlers = new LinkedList<Handler>();
         handlers.add(new RegistrationHandler(df.getUserService(), df.getObjectMapper(),
                 df.getErrorHandler()));
-        handlers.add(new FileHandler(df.getImageService(), df.getObjectMapper(),
+        handlers.add(new InfoHandler(df.getImageService(), df.getObjectMapper(),
+                df.getErrorHandler()));
+        handlers.add(new DataHandler(df.getImageService(), df.getObjectMapper(),
                 df.getErrorHandler()));
         handlers.add(new HelloHandler(df.getObjectMapper(),
                 df.getErrorHandler()));
@@ -78,7 +81,7 @@ public final class App {
         var httpPort = Configuration.port();
 
         var app = new App(httpPort, RunMode.DEV);
-        var dependencyFactory = new DependencyFactory();
+        var dependencyFactory = new DefaultDependencyFactory();
         app.init(dependencyFactory);
         app.start();
     }

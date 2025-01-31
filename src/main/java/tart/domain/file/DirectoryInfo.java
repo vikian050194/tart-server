@@ -2,11 +2,11 @@ package tart.domain.file;
 
 import java.util.List;
 
-public class DirectoryDescription implements NodeDescription {
+public class DirectoryInfo implements NodeInfo {
 
     private final List<String> dirs;
 
-    public DirectoryDescription(List<String> d) {
+    public DirectoryInfo(List<String> d) {
         dirs = d;
     }
 
