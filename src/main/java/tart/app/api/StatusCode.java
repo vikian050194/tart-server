@@ -13,5 +13,5 @@ public enum StatusCode {
     BAD_REQUEST(400),
     METHOD_NOT_ALLOWED(405);
 
-    private int code;
+    private final int code;
 }

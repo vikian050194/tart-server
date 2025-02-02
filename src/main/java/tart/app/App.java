@@ -49,9 +49,9 @@ public final class App {
         var handlers = new LinkedList<Handler>();
         handlers.add(new RegistrationHandler(df.getUserService(), df.getObjectMapper(),
                 df.getErrorHandler()));
-        handlers.add(new InfoHandler(df.getImageService(), df.getObjectMapper(),
+        handlers.add(new InfoHandler(df.getFileService(), df.getObjectMapper(),
                 df.getErrorHandler()));
-        handlers.add(new DataHandler(df.getImageService(), df.getObjectMapper(),
+        handlers.add(new DataHandler(df.getFileService(), df.getObjectMapper(),
                 df.getErrorHandler()));
         handlers.add(new HelloHandler(df.getObjectMapper(),
                 df.getErrorHandler()));

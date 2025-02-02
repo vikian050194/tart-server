@@ -4,36 +4,36 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
-public class TestFileRepository implements FileRepository{
+public class TestFileRepository implements FileRepository {
 
     @Override
     public List<DirectoryInfo> getDirectories() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return List.of(new DirectoryInfo(List.of("foo", "bar", "baz")));
     }
 
     @Override
     public List<DirectoryInfo> getDirectories(DirectoryInfo d) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return List.of(new DirectoryInfo(List.of("root", "foo", "bar", "baz")));
     }
 
     @Override
     public List<FileInfo> getDescriptions(DirectoryInfo d) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public FileData getData(FileInfo f) throws IOException, FileNotFoundException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public boolean update(FileInfo f) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public boolean delete(FileInfo f) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet.");
     }
-    
+
 }

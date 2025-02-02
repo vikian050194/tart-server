@@ -17,8 +17,8 @@ public interface DependencyFactory {
 
     public UserService getUserService();
 
-    public FileRepository getImageRepository();
+    public FileRepository getFileRepository();
 
-    public FileService getImageService();
+    public FileService getFileService();
 
 }

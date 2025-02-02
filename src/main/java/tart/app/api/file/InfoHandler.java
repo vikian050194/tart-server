@@ -8,7 +8,6 @@ import java.net.URI;
 import java.util.List;
 import tart.app.api.*;
 import tart.app.errors.*;
-import tart.domain.file.DirectoryInfo;
 import tart.domain.file.FileService;
 
 public class InfoHandler extends Handler {
@@ -57,18 +56,18 @@ public class InfoHandler extends Handler {
         exchange.close();
     }
 
-    private ResponseEntity<List<DirectoryInfo>> doGet(URI uri) throws IOException {
+    private ResponseEntity<InfoResponse> doGet(URI uri) throws IOException {
         var params = splitQuery(uri.getRawQuery());
         var dir = params.getOrDefault("dir", List.of()).stream().toList();
 
         if (dir.isEmpty()) {
-            var dirs = fileService.getDirectories();
-            return new ResponseEntity<>(dirs,
+            var dirs = fileService.getDirectories().stream().map(d -> d.getFullName()).toList();
+            return new ResponseEntity<>(new InfoResponse(dirs),
                     getHeaders(Constants.CONTENT_TYPE, Constants.APPLICATION_JSON), StatusCode.OK);
         }
 
-        var dirs = fileService.getDirectories(dir);
-        return new ResponseEntity<>(dirs,
+        var dirs = fileService.getDirectories(dir).stream().map(d -> d.getFullName()).toList();
+        return new ResponseEntity<>(new InfoResponse(dirs),
                 getHeaders(Constants.CONTENT_TYPE, Constants.APPLICATION_JSON), StatusCode.OK);
 
     }

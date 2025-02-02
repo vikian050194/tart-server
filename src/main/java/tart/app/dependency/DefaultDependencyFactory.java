@@ -57,7 +57,7 @@ public class DefaultDependencyFactory implements DependencyFactory {
     }
 
     @Override
-    public FileRepository getImageRepository() {
+    public FileRepository getFileRepository() {
         if (IMAGE_REPOSITORY == null) {
             IMAGE_REPOSITORY = new LocalFileRepository();
         }
@@ -66,9 +66,9 @@ public class DefaultDependencyFactory implements DependencyFactory {
     }
 
     @Override
-    public FileService getImageService() {
+    public FileService getFileService() {
         if (IMAGE_SERVICE == null) {
-            IMAGE_SERVICE = new FileService(getImageRepository());
+            IMAGE_SERVICE = new FileService(getFileRepository());
         }
 
         return IMAGE_SERVICE;

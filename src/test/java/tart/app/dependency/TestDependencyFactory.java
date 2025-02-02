@@ -59,7 +59,7 @@ public class TestDependencyFactory implements DependencyFactory {
     }
 
     @Override
-    public FileRepository getImageRepository() {
+    public FileRepository getFileRepository() {
         if (IMAGE_REPOSITORY == null) {
             IMAGE_REPOSITORY = new TestFileRepository();
         }
@@ -68,9 +68,9 @@ public class TestDependencyFactory implements DependencyFactory {
     }
 
     @Override
-    public FileService getImageService() {
+    public FileService getFileService() {
         if (IMAGE_SERVICE == null) {
-            IMAGE_SERVICE = new TestFileService(getImageRepository());
+            IMAGE_SERVICE = new TestFileService(getFileRepository());
         }
 
         return IMAGE_SERVICE;

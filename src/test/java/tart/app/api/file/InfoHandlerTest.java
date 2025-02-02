@@ -1,5 +1,6 @@
 package tart.app.api.file;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -10,16 +11,16 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import tart.app.api.BaseApiTest;
-import tart.domain.file.DirectoryInfo;
 
 class InfoHandlerTest extends BaseApiTest {
 
     @Test
-    void testAnonymousCall() throws IOException, InterruptedException, URISyntaxException {
+    void testNoDirParamIsProvided() throws IOException, InterruptedException, URISyntaxException {
         // Arrange
-
+//        var imageService = (TestFileService) dependencyFactory.getFileService();
+//        imageService.setDirectories(List.of(new DirectoryInfo(List.of("all")))));
         var expectedStatus = 200;
-        var expectedBody = List.of(new DirectoryInfo(List.of("foo", "bar", "baz")));
+        var expectedBody = new InfoResponse(List.of(List.of("foo", "bar", "baz")));
         var client = HttpClient.newHttpClient();
         var uri = new URI("%s/%s".formatted(baseAddress, "info"));
 
@@ -30,14 +31,17 @@ class InfoHandlerTest extends BaseApiTest {
 
         // Assert
         assertEquals(expectedStatus, response.statusCode());
-        assertEquals(expectedBody, response.body());
+        var om = new ObjectMapper();
+        String body = response.body();
+        var actualBody = om.readValue(body, InfoResponse.class);
+        assertEquals(expectedBody, actualBody);
     }
 
     @Test
-    void testUserCall() throws IOException, InterruptedException, URISyntaxException {
+    void testSingleDirParamIsProvided() throws IOException, InterruptedException, URISyntaxException {
         // Arrange
         var expectedStatus = 200;
-        var expectedBody = "Hello, V!";
+        var expectedBody = new InfoResponse(List.of(List.of("root", "foo", "bar", "baz")));
         var client = HttpClient.newHttpClient();
         var uri = new URI("%s/%s?dir=root".formatted(baseAddress, "info"));
 
@@ -48,6 +52,9 @@ class InfoHandlerTest extends BaseApiTest {
 
         // Assert
         assertEquals(expectedStatus, response.statusCode());
-        assertEquals(expectedBody, response.body());
+        var om = new ObjectMapper();
+        String body = response.body();
+        var actualBody = om.readValue(body, InfoResponse.class);
+        assertEquals(expectedBody, actualBody);
     }
 }
