@@ -53,7 +53,12 @@ public class LocalFileRepository implements FileRepository {
     }
 
     @Override
-    public List<FileInfo> getDescriptions(DirectoryInfo dd) {
+    public List<FileInfo> getFiles() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<FileInfo> getFiles(DirectoryInfo dd) {
         var home = getFullName(dd);
         var root = new File(home);
 
@@ -136,14 +141,14 @@ public class LocalFileRepository implements FileRepository {
         return !files.isEmpty();
     }
 
-    public List<FileWrapper> getFiles() {
-        if (changed) {
-            // TODO refactor this non optimal last file mather storing
-            // TODO full inspect is heavy - update only changed File?
-        }
-
-        return files;
-    }
+//    public List<FileWrapper> getFiles() {
+//        if (changed) {
+//            // TODO refactor this non optimal last file mather storing
+//            // TODO full inspect is heavy - update only changed File?
+//        }
+//
+//        return files;
+//    }
 
     public File moveTo(File sourceFile, File targetDir) {
         var targetFile = new File(targetDir, sourceFile.getName());

@@ -44,7 +44,7 @@ public class LocalFileRepositoryTests {
         var expectedSize = 7;
 
         // Act
-        var actualSize = fr.getDescriptions(target).size();
+        var actualSize = fr.getFiles(target).size();
 
         // Assert
         assertEquals(expectedSize, actualSize);

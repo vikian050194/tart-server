@@ -6,19 +6,35 @@ import java.util.List;
 
 public class TestFileRepository implements FileRepository {
 
+    private List<DirectoryInfo> dirs = List.of();
+    private List<FileInfo> files = List.of();
+
     @Override
     public List<DirectoryInfo> getDirectories() {
-        return List.of(new DirectoryInfo(List.of("foo", "bar", "baz")));
+        return dirs;
+    }
+
+    public void setDirectories(List<DirectoryInfo> v) {
+        dirs = v;
     }
 
     @Override
     public List<DirectoryInfo> getDirectories(DirectoryInfo d) {
-        return List.of(new DirectoryInfo(List.of("root", "foo", "bar", "baz")));
+        return dirs;
+    }
+
+    public void setFiles(List<FileInfo> v) {
+        files = v;
     }
 
     @Override
-    public List<FileInfo> getDescriptions(DirectoryInfo d) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public List<FileInfo> getFiles() {
+        return files;
+    }
+
+    @Override
+    public List<FileInfo> getFiles(DirectoryInfo d) {
+        return files;
     }
 
     @Override

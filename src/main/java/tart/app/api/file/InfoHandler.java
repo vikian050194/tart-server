@@ -62,12 +62,14 @@ public class InfoHandler extends Handler {
 
         if (dir.isEmpty()) {
             var dirs = fileService.getDirectories().stream().map(d -> d.getFullName()).toList();
-            return new ResponseEntity<>(new InfoResponse(dirs),
+            var files = fileService.getDescriptions().stream().map(d -> d.getFullName()).toList();
+            return new ResponseEntity<>(new InfoResponse(dirs, files),
                     getHeaders(Constants.CONTENT_TYPE, Constants.APPLICATION_JSON), StatusCode.OK);
         }
 
         var dirs = fileService.getDirectories(dir).stream().map(d -> d.getFullName()).toList();
-        return new ResponseEntity<>(new InfoResponse(dirs),
+        var files = fileService.getDescriptions(dir).stream().map(d -> d.getFullName()).toList();
+        return new ResponseEntity<>(new InfoResponse(dirs, files),
                 getHeaders(Constants.CONTENT_TYPE, Constants.APPLICATION_JSON), StatusCode.OK);
 
     }

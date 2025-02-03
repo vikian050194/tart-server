@@ -9,7 +9,7 @@ public class InfoResponse {
     public List<List<String>> files;
 
     public InfoResponse() {
-
+        this(List.of(), List.of());
     }
 
     public InfoResponse(List<List<String>> d) {

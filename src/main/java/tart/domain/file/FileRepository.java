@@ -9,7 +9,9 @@ public interface FileRepository {
 
     public List<DirectoryInfo> getDirectories(DirectoryInfo d);
 
-    public List<FileInfo> getDescriptions(DirectoryInfo d);
+    public List<FileInfo> getFiles();
+
+    public List<FileInfo> getFiles(DirectoryInfo d);
 
     public FileData getData(FileInfo f) throws IOException, FileNotFoundException;
 

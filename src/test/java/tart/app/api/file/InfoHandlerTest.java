@@ -11,14 +11,41 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import tart.app.api.BaseApiTest;
+import tart.domain.file.DirectoryInfo;
+import tart.domain.file.FileInfo;
+import tart.domain.file.TestFileRepository;
 
 class InfoHandlerTest extends BaseApiTest {
 
+    TestFileRepository getFileRepository() {
+        return (TestFileRepository) dependencyFactory.getFileRepository();
+    }
+
     @Test
-    void testNoDirParamIsProvided() throws IOException, InterruptedException, URISyntaxException {
+    void testEmptyLists() throws IOException, InterruptedException, URISyntaxException {
         // Arrange
-//        var imageService = (TestFileService) dependencyFactory.getFileService();
-//        imageService.setDirectories(List.of(new DirectoryInfo(List.of("all")))));
+        var expectedStatus = 200;
+        var expectedBody = new InfoResponse();
+        var client = HttpClient.newHttpClient();
+        var uri = new URI("%s/%s".formatted(baseAddress, "info"));
+
+        // Act
+        var response = client.send(
+                HttpRequest.newBuilder().GET().uri(uri).build(),
+                BodyHandlers.ofString());
+
+        // Assert
+        assertEquals(expectedStatus, response.statusCode());
+        var om = new ObjectMapper();
+        String body = response.body();
+        var actualBody = om.readValue(body, InfoResponse.class);
+        assertEquals(expectedBody, actualBody);
+    }
+
+    @Test
+    void testOnlyDirs() throws IOException, InterruptedException, URISyntaxException {
+        // Arrange
+        getFileRepository().setDirectories(List.of(new DirectoryInfo(List.of("foo", "bar", "baz"))));
         var expectedStatus = 200;
         var expectedBody = new InfoResponse(List.of(List.of("foo", "bar", "baz")));
         var client = HttpClient.newHttpClient();
@@ -38,10 +65,34 @@ class InfoHandlerTest extends BaseApiTest {
     }
 
     @Test
-    void testSingleDirParamIsProvided() throws IOException, InterruptedException, URISyntaxException {
+    void testOnlyFiles() throws IOException, InterruptedException, URISyntaxException {
         // Arrange
+        getFileRepository().setFiles(List.of(new FileInfo(List.of("foo"), "bar.png")));
         var expectedStatus = 200;
-        var expectedBody = new InfoResponse(List.of(List.of("root", "foo", "bar", "baz")));
+        var expectedBody = new InfoResponse(List.of(), List.of(List.of("foo", "bar.png")));
+        var client = HttpClient.newHttpClient();
+        var uri = new URI("%s/%s".formatted(baseAddress, "info"));
+
+        // Act
+        var response = client.send(
+                HttpRequest.newBuilder().GET().uri(uri).build(),
+                BodyHandlers.ofString());
+
+        // Assert
+        assertEquals(expectedStatus, response.statusCode());
+        var om = new ObjectMapper();
+        String body = response.body();
+        var actualBody = om.readValue(body, InfoResponse.class);
+        assertEquals(expectedBody, actualBody);
+    }
+
+    @Test
+    void testDirParam() throws IOException, InterruptedException, URISyntaxException {
+        // Arrange
+        getFileRepository().setDirectories(List.of(new DirectoryInfo(List.of("root"))));
+        getFileRepository().setFiles(List.of(new FileInfo(List.of("root"), "root.png")));
+        var expectedStatus = 200;
+        var expectedBody = new InfoResponse(List.of(List.of("root")), List.of(List.of("root", "root.png")));
         var client = HttpClient.newHttpClient();
         var uri = new URI("%s/%s?dir=root".formatted(baseAddress, "info"));
 
@@ -57,4 +108,5 @@ class InfoHandlerTest extends BaseApiTest {
         var actualBody = om.readValue(body, InfoResponse.class);
         assertEquals(expectedBody, actualBody);
     }
+
 }
