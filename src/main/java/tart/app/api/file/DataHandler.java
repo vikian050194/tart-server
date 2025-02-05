@@ -8,7 +8,6 @@ import java.net.URI;
 import java.util.List;
 import tart.app.api.*;
 import tart.app.errors.*;
-import tart.domain.file.DirectoryInfo;
 import tart.domain.file.FileService;
 
 public class DataHandler extends Handler {
@@ -41,9 +40,7 @@ public class DataHandler extends Handler {
 
         if ("GET".equals(exchange.getRequestMethod())) {
             var e = doGet(exchange.getRequestURI());
-            response = super.writeResponse(e.getBody());
-            // TODO split file handler that returns bytes and all other endpoints that return JSON
-//            response = e.getBody();
+            response = e.getBody();
             exchange.getResponseHeaders().putAll(e.getHeaders());
             exchange.sendResponseHeaders(e.getStatusCode().getCode(), response.length);
         } else {
@@ -59,37 +56,15 @@ public class DataHandler extends Handler {
         exchange.close();
     }
 
-    private ResponseEntity<List<DirectoryInfo>> doGet(URI uri) throws IOException {
-        var path = uri.getRawPath();
-        var foo = path.substring(url().length());
+    private ResponseEntity<byte[]> doGet(URI uri) throws IOException {
+        var params = splitQuery(uri.getRawQuery());
+        // TODO return 400 if dir is empty
+        var dir = params.getOrDefault("dir", List.of()).stream().toList();
+        // TODO return 400 is name is empty
+        var name = params.get("name").stream().findFirst().orElseThrow();
+        var file = fileService.getFileData(dir, name);
+        return new ResponseEntity<>(file.getData(),
+                getHeaders(Constants.CONTENT_TYPE, Constants.IMAGE_JPEG), StatusCode.OK);
 
-        switch (foo) {
-            case "": {
-                var params = splitQuery(uri.getRawQuery());
-                var dir = params.getOrDefault("dir", List.of()).stream().toList();
-                var name = params.get("name").stream().findFirst().orElseThrow();
-//                var name = "";
-
-                if (dir.isEmpty()) {
-                    var dirs = fileService.getDirectories();
-
-                    return new ResponseEntity<>(dirs,
-                            getHeaders(Constants.CONTENT_TYPE, Constants.APPLICATION_JSON), StatusCode.OK);
-                }
-
-                // TODO name is optional
-//                var file = fileService.getFileData(dir, name);
-//
-//                return new ResponseEntity<>(file.getData(),
-//                        getHeaders(Constants.CONTENT_TYPE, Constants.IMAGE_JPEG), StatusCode.OK);
-                var dirs = fileService.getDirectories();
-
-                return new ResponseEntity<>(dirs,
-                        getHeaders(Constants.CONTENT_TYPE, Constants.APPLICATION_JSON), StatusCode.OK);
-
-            }
-            default:
-                throw new AssertionError();
-        }
     }
 }

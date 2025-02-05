@@ -1,5 +1,6 @@
 package tart.domain.file;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -12,18 +13,24 @@ public class FileService {
     }
 
     public List<DirectoryInfo> getDirectories() {
-        return imageRepository.getDirectories();
+        // TODO extract System.getProperty to separate service
+        var home = System.getProperty("user.home");
+        var homeDirs = home.split(File.separator);
+        return getDirectories(List.of(homeDirs));
     }
 
     public List<DirectoryInfo> getDirectories(List<String> d) {
         return imageRepository.getDirectories(new DirectoryInfo(d));
     }
 
-    public List<FileInfo> getDescriptions() {
-        return imageRepository.getFiles();
+    public List<FileInfo> getFiles() {
+        // TODO extract System.getProperty to separate service
+        var home = System.getProperty("user.home");
+        var homeDirs = home.split(File.separator);
+        return getFiles(List.of(homeDirs));
     }
 
-    public List<FileInfo> getDescriptions(List<String> d) {
+    public List<FileInfo> getFiles(List<String> d) {
         return imageRepository.getFiles(new DirectoryInfo(d));
     }
 

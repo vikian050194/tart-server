@@ -10,19 +10,6 @@ import tart.domain.file.FileRepository;
 public class LocalFileRepositoryTests {
 
     @Test
-    public void getDirectoriesAtHome() {
-        // Arrange
-        FileRepository fr = new LocalFileRepository();
-        var expectedSize = 36;
-
-        // Act
-        var actualSize = fr.getDirectories().size();
-
-        // Assert
-        assertEquals(expectedSize, actualSize);
-    }
-
-    @Test
     public void getDirectoriesAtTarget() {
         // Arrange
         var target = new DirectoryInfo(List.of("home", "kirill", "git"));
@@ -35,9 +22,9 @@ public class LocalFileRepositoryTests {
         // Assert
         assertEquals(expectedSize, actualSize);
     }
-    
+
     @Test
-    public void getDescriptions() {
+    public void getFiles() {
         // Arrange
         var target = new DirectoryInfo(List.of("home", "kirill", "git", "tart"));
         FileRepository fr = new LocalFileRepository();

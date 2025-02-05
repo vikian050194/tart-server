@@ -21,19 +21,6 @@ public class LocalFileRepository implements FileRepository {
     }
 
     @Override
-    public List<DirectoryInfo> getDirectories() {
-        var home = System.getProperty("user.home");
-        var root = new File(home);
-
-        var result = Stream.of(root.listFiles())
-                .filter(file -> file.isDirectory())
-                .map(d -> mapFileToDirectoryDescription(d))
-                .collect(Collectors.toList());
-
-        return result;
-    }
-
-    @Override
     public List<DirectoryInfo> getDirectories(DirectoryInfo di) {
         var home = getFullName(di);
         var root = new File(home);
@@ -50,11 +37,6 @@ public class LocalFileRepository implements FileRepository {
         var name = f.getName();
         var dirs = List.of(f.getParentFile().getAbsolutePath().split(File.separator)).stream().filter(d -> !d.isEmpty()).toList();
         return new FileInfo(dirs, name);
-    }
-
-    @Override
-    public List<FileInfo> getFiles() {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override

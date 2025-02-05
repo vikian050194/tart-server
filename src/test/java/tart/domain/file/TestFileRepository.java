@@ -9,11 +9,6 @@ public class TestFileRepository implements FileRepository {
     private List<DirectoryInfo> dirs = List.of();
     private List<FileInfo> files = List.of();
 
-    @Override
-    public List<DirectoryInfo> getDirectories() {
-        return dirs;
-    }
-
     public void setDirectories(List<DirectoryInfo> v) {
         dirs = v;
     }
@@ -25,11 +20,6 @@ public class TestFileRepository implements FileRepository {
 
     public void setFiles(List<FileInfo> v) {
         files = v;
-    }
-
-    @Override
-    public List<FileInfo> getFiles() {
-        return files;
     }
 
     @Override

@@ -5,11 +5,7 @@ import java.util.List;
 
 public interface FileRepository {
 
-    public List<DirectoryInfo> getDirectories();
-
     public List<DirectoryInfo> getDirectories(DirectoryInfo d);
-
-    public List<FileInfo> getFiles();
 
     public List<FileInfo> getFiles(DirectoryInfo d);
 
