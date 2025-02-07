@@ -8,9 +8,10 @@ public class TestFileRepository implements FileRepository {
 
     private List<DirectoryInfo> dirs = List.of();
     private List<FileInfo> files = List.of();
+    private FileData data = new FileData(new byte[0]);
 
-    public void setDirectories(List<DirectoryInfo> v) {
-        dirs = v;
+    public void setDirectories(List<DirectoryInfo> value) {
+        dirs = value;
     }
 
     @Override
@@ -18,8 +19,8 @@ public class TestFileRepository implements FileRepository {
         return dirs;
     }
 
-    public void setFiles(List<FileInfo> v) {
-        files = v;
+    public void setFiles(List<FileInfo> value) {
+        files = value;
     }
 
     @Override
@@ -27,9 +28,13 @@ public class TestFileRepository implements FileRepository {
         return files;
     }
 
+    public void setData(FileData value) {
+        data = value;
+    }
+
     @Override
     public FileData getData(FileInfo f) throws IOException, FileNotFoundException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return data;
     }
 
     @Override
