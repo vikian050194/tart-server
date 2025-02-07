@@ -56,10 +56,7 @@ public class RegistrationHandler extends Handler {
     private ResponseEntity<RegistrationResponse> doPost(InputStream is) {
         RegistrationRequest registerRequest = super.readRequest(is, RegistrationRequest.class);
 
-        NewUser user = NewUser.builder()
-                .login(registerRequest.getLogin())
-                .password(PasswordEncoder.encode(registerRequest.getPassword()))
-                .build();
+        NewUser user = new NewUser(registerRequest.getLogin(), PasswordEncoder.encode(registerRequest.getPassword()));
 
         String userId = userService.create(user);
 

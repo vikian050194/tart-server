@@ -14,11 +14,7 @@ public class InMemoryUserRepository implements UserRepository {
     @Override
     public String create(NewUser newUser) {
         String id = UUID.randomUUID().toString();
-        User user = User.builder()
-            .id(id)
-            .login(newUser.getLogin())
-            .password(newUser.getPassword())
-            .build();
+        User user = new User(id, newUser.getLogin(), newUser.getPassword());
         USERS_STORE.put(newUser.getLogin(), user);
 
         return id;

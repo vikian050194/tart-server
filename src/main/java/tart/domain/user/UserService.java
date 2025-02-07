@@ -1,11 +1,12 @@
 package tart.domain.user;
 
-import lombok.AllArgsConstructor;
-
-@AllArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+
+    public UserService(UserRepository ur) {
+        userRepository = ur;
+    }
 
     public String create(NewUser user) {
         return userRepository.create(user);
