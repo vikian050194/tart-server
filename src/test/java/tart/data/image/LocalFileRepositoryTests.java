@@ -4,7 +4,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import tart.data.file.LocalFileRepository;
-import tart.domain.file.DirectoryInfo;
 import tart.domain.file.FileRepository;
 
 public class LocalFileRepositoryTests {
@@ -12,7 +11,7 @@ public class LocalFileRepositoryTests {
     @Test
     public void getDirectoriesAtTarget() {
         // Arrange
-        var target = new DirectoryInfo(List.of("home", "kirill", "git"));
+        var target = List.of("home", "kirill", "git");
         FileRepository fr = new LocalFileRepository();
         var expectedSize = 33;
 
@@ -26,7 +25,7 @@ public class LocalFileRepositoryTests {
     @Test
     public void getFiles() {
         // Arrange
-        var target = new DirectoryInfo(List.of("home", "kirill", "git", "tart"));
+        var target = List.of("home", "kirill", "git", "tart");
         FileRepository fr = new LocalFileRepository();
         var expectedSize = 7;
 

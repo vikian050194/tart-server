@@ -1,39 +1,35 @@
 package tart.domain.file;
 
-import java.util.ArrayList;
 import java.util.List;
 
 // TODO is it better to make parent and child classes instead of interface NodeInfo?
 public class FileInfo implements NodeInfo {
 
-    private final String name;
-    private final List<String> dirs;
+    private final List<String> path;
     private static final String EXTENSION_DELIMITER = ".";
 
-    public FileInfo(List<String> d, String n) {
-        name = n;
-        dirs = d;
+    public FileInfo(List<String> p) {
+        path = p;
     }
 
     @Override
     public String getName() {
-        return name;
+        return path.get(path.size() - 1);
     }
 
     public String getExtension() {
+        var name = getName();
         var index = name.indexOf(EXTENSION_DELIMITER);
         return name.substring(index + 1);
     }
 
     @Override
     public List<String> getDirs() {
-        return dirs;
+        return path.subList(0, path.size() - 1);
     }
 
     @Override
     public List<String> getFullName() {
-        var result = new ArrayList<>(dirs);
-        result.add(name);
-        return List.copyOf(result);
+        return path;
     }
 }

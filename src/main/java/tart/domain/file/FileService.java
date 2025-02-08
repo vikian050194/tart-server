@@ -12,30 +12,35 @@ public class FileService {
         imageRepository = ir;
     }
 
-    public List<DirectoryInfo> getDirectories() {
+    public List<String> getDirectories() {
         // TODO extract System.getProperty to separate service
         var home = System.getProperty("user.home");
-        var homeDirs = home.split(File.separator);
-        return getDirectories(List.of(homeDirs));
+        var homeDirPath = List.of(home.split(File.separator));
+        return getDirectories(homeDirPath);
     }
 
-    public List<DirectoryInfo> getDirectories(List<String> d) {
-        return imageRepository.getDirectories(new DirectoryInfo(d));
+    public List<String> getDirectories(List<String> path) {
+        // TODO extract following flag to properties or UI
+        var showSystemDirs = false;
+        var systemDirPrefix = ".";
+        var dirs = imageRepository.getDirectories(path);
+        var filteredDirs = dirs.stream().filter(d -> d.startsWith(systemDirPrefix) == showSystemDirs).toList();
+        return filteredDirs;
     }
 
-    public List<FileInfo> getFiles() {
+    public List<String> getFiles() {
         // TODO extract System.getProperty to separate service
         var home = System.getProperty("user.home");
-        var homeDirs = home.split(File.separator);
-        return getFiles(List.of(homeDirs));
+        var homeDirPath = List.of(home.split(File.separator));
+        return getFiles(homeDirPath);
     }
 
-    public List<FileInfo> getFiles(List<String> d) {
-        return imageRepository.getFiles(new DirectoryInfo(d));
+    public List<String> getFiles(List<String> path) {
+        return imageRepository.getFiles(path);
     }
 
-    public FileData getFileData(List<String> d, String n) throws IOException {
-        return imageRepository.getData(new FileInfo(d, n));
+    public byte[] getFileData(List<String> path) throws IOException {
+        return imageRepository.getData(path);
     }
 
 }

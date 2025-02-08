@@ -5,18 +5,18 @@ import java.util.Objects;
 
 public class InfoResponse {
 
-    public List<List<String>> dirs;
-    public List<List<String>> files;
+    public List<String> dirs;
+    public List<String> files;
 
     public InfoResponse() {
         this(List.of(), List.of());
     }
 
-    public InfoResponse(List<List<String>> d) {
+    public InfoResponse(List<String> d) {
         this(d, List.of());
     }
 
-    public InfoResponse(List<List<String>> d, List<List<String>> f) {
+    public InfoResponse(List<String> d, List<String> f) {
         dirs = d;
         files = f;
     }

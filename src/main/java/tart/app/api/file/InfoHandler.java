@@ -57,18 +57,20 @@ public class InfoHandler extends Handler {
     }
 
     private ResponseEntity<InfoResponse> doGet(URI uri) throws IOException {
-        var params = splitQuery(uri.getRawQuery());
-        var dir = params.getOrDefault("dir", List.of()).stream().toList();
+        var fullPath = uri.getPath();
+        var dirPath = fullPath.substring(url().length());
+        var delimiter = "/";
+        var path = List.of(dirPath.split(delimiter)).stream().filter(p -> !p.isEmpty()).toList();
 
-        if (dir.isEmpty()) {
-            var dirs = fileService.getDirectories().stream().map(d -> d.getFullName()).toList();
-            var files = fileService.getFiles().stream().map(d -> d.getFullName()).toList();
+        if (path.isEmpty()) {
+            var dirs = fileService.getDirectories();
+            var files = fileService.getFiles();
             return new ResponseEntity<>(new InfoResponse(dirs, files),
                     getHeaders(Constants.CONTENT_TYPE, Constants.APPLICATION_JSON), StatusCode.OK);
         }
 
-        var dirs = fileService.getDirectories(dir).stream().map(d -> d.getFullName()).toList();
-        var files = fileService.getFiles(dir).stream().map(d -> d.getFullName()).toList();
+        var dirs = fileService.getDirectories(path);
+        var files = fileService.getFiles(path);
         return new ResponseEntity<>(new InfoResponse(dirs, files),
                 getHeaders(Constants.CONTENT_TYPE, Constants.APPLICATION_JSON), StatusCode.OK);
 

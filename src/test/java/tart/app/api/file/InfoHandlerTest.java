@@ -11,8 +11,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import tart.app.api.BaseApiTest;
-import tart.domain.file.DirectoryInfo;
-import tart.domain.file.FileInfo;
 import tart.domain.file.TestFileRepository;
 
 class InfoHandlerTest extends BaseApiTest {
@@ -45,9 +43,9 @@ class InfoHandlerTest extends BaseApiTest {
     @Test
     void testOnlyDirs() throws IOException, InterruptedException, URISyntaxException {
         // Arrange
-        getFileRepository().setDirectories(List.of(new DirectoryInfo(List.of("foo", "bar", "baz"))));
+        getFileRepository().setDirectories(List.of("foo", "bar", "baz"));
         var expectedStatus = 200;
-        var expectedBody = new InfoResponse(List.of(List.of("foo", "bar", "baz")));
+        var expectedBody = new InfoResponse(List.of("foo", "bar", "baz"));
         var client = HttpClient.newHttpClient();
         var uri = new URI("%s/%s".formatted(baseAddress, "info"));
 
@@ -67,9 +65,9 @@ class InfoHandlerTest extends BaseApiTest {
     @Test
     void testOnlyFiles() throws IOException, InterruptedException, URISyntaxException {
         // Arrange
-        getFileRepository().setFiles(List.of(new FileInfo(List.of("foo"), "bar.png")));
+        getFileRepository().setFiles(List.of("foo", "bar.png"));
         var expectedStatus = 200;
-        var expectedBody = new InfoResponse(List.of(), List.of(List.of("foo", "bar.png")));
+        var expectedBody = new InfoResponse(List.of(), List.of("foo", "bar.png"));
         var client = HttpClient.newHttpClient();
         var uri = new URI("%s/%s".formatted(baseAddress, "info"));
 
@@ -87,14 +85,15 @@ class InfoHandlerTest extends BaseApiTest {
     }
 
     @Test
-    void testDirParam() throws IOException, InterruptedException, URISyntaxException {
+    void testCustomDir() throws IOException, InterruptedException, URISyntaxException {
         // Arrange
-        getFileRepository().setDirectories(List.of(new DirectoryInfo(List.of("root"))));
-        getFileRepository().setFiles(List.of(new FileInfo(List.of("root"), "root.png")));
+        getFileRepository().setDirectories(List.of("root"));
+        getFileRepository().setFiles(List.of("root", "root.png"));
         var expectedStatus = 200;
-        var expectedBody = new InfoResponse(List.of(List.of("root")), List.of(List.of("root", "root.png")));
+        var expectedBody = new InfoResponse(List.of("root"), List.of("root", "root.png"));
         var client = HttpClient.newHttpClient();
-        var uri = new URI("%s/%s?dir=root".formatted(baseAddress, "info"));
+        var testDirName = "root";
+        var uri = new URI("%s/%s/%s".formatted(baseAddress, "info", testDirName));
 
         // Act
         var response = client.send(

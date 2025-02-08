@@ -57,17 +57,12 @@ public class DataHandler extends Handler {
     }
 
     private ResponseEntity<byte[]> doGet(URI uri) throws IOException {
-        var path = uri.getPath();
-        var foo = path.substring(url().length());
+        var fullPath = uri.getPath();
+        var filePath = fullPath.substring(url().length());
         var delimiter = "/";
-        // TODO filter empty chunks
-        var bar = List.of(foo.split(delimiter)).stream().filter(prdct -> !prdct.isEmpty()).toList();
-        var dir = bar.subList(0, bar.size() - 1);
-        var name = bar.get(bar.size() - 1);
-        // TODO return 400 if dir is empty
-        // TODO return 400 is name is empty
-        var file = fileService.getFileData(dir, name);
-        return new ResponseEntity<>(file.getData(),
+        var path = List.of(filePath.split(delimiter)).stream().filter(p -> !p.isEmpty()).toList();
+        var file = fileService.getFileData(path);
+        return new ResponseEntity<>(file,
                 getHeaders(Constants.CONTENT_TYPE, Constants.IMAGE_JPEG), StatusCode.OK);
 
     }

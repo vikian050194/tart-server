@@ -6,44 +6,44 @@ import java.util.List;
 
 public class TestFileRepository implements FileRepository {
 
-    private List<DirectoryInfo> dirs = List.of();
-    private List<FileInfo> files = List.of();
-    private FileData data = new FileData(new byte[0]);
+    private List<String> dirs = List.of();
+    private List<String> files = List.of();
+    private byte[] data = new byte[0];
 
-    public void setDirectories(List<DirectoryInfo> value) {
+    public void setDirectories(List<String> value) {
         dirs = value;
     }
 
     @Override
-    public List<DirectoryInfo> getDirectories(DirectoryInfo d) {
+    public List<String> getDirectories(List<String> path) {
         return dirs;
     }
 
-    public void setFiles(List<FileInfo> value) {
+    public void setFiles(List<String> value) {
         files = value;
     }
 
     @Override
-    public List<FileInfo> getFiles(DirectoryInfo d) {
+    public List<String> getFiles(List<String> path) {
         return files;
     }
 
-    public void setData(FileData value) {
+    public void setData(byte[] value) {
         data = value;
     }
 
     @Override
-    public FileData getData(FileInfo f) throws IOException, FileNotFoundException {
+    public byte[] getData(List<String> path) throws IOException, FileNotFoundException {
         return data;
     }
 
     @Override
-    public boolean update(FileInfo f) {
+    public boolean update(List<String> oldPath, List<String> newPath) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public boolean delete(FileInfo f) {
+    public boolean delete(List<String> path) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
