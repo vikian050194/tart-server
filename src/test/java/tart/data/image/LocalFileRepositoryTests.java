@@ -13,7 +13,7 @@ public class LocalFileRepositoryTests {
         // Arrange
         var target = List.of("home", "kirill", "git");
         FileRepository fr = new LocalFileRepository();
-        var expectedSize = 33;
+        var expectedSize = 34;
 
         // Act
         var actualSize = fr.getDirectories(target).size();

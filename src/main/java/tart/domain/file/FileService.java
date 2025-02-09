@@ -36,7 +36,12 @@ public class FileService {
     }
 
     public List<String> getFiles(List<String> path) {
-        return imageRepository.getFiles(path);
+        // TODO extract following flag to properties or UI
+        var showSystemDirs = false;
+        var systemDirPrefix = ".";
+        var files = imageRepository.getDirectories(path);
+        var filteredFiles = files.stream().filter(d -> d.startsWith(systemDirPrefix) == showSystemDirs).toList();
+        return filteredFiles;
     }
 
     public byte[] getFileData(List<String> path) throws IOException {
