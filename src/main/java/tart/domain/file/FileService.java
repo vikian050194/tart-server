@@ -13,10 +13,8 @@ public class FileService {
     }
 
     public List<String> getDirectories() {
-        // TODO extract System.getProperty to separate service
-        var home = System.getProperty("user.home");
-        var homeDirPath = List.of(home.split(File.separator));
-        return getDirectories(homeDirPath);
+        var rootPath = List.of(File.separator);
+        return getDirectories(rootPath);
     }
 
     public List<String> getDirectories(List<String> path) {
@@ -29,18 +27,16 @@ public class FileService {
     }
 
     public List<String> getFiles() {
-        // TODO extract System.getProperty to separate service
-        var home = System.getProperty("user.home");
-        var homeDirPath = List.of(home.split(File.separator));
-        return getFiles(homeDirPath);
+        var rootPath = List.of(File.separator);
+        return getFiles(rootPath);
     }
 
     public List<String> getFiles(List<String> path) {
         // TODO extract following flag to properties or UI
-        var showSystemDirs = false;
-        var systemDirPrefix = ".";
-        var files = imageRepository.getDirectories(path);
-        var filteredFiles = files.stream().filter(d -> d.startsWith(systemDirPrefix) == showSystemDirs).toList();
+        var showSystemFiles = false;
+        var systemFilePrefix = ".";
+        var files = imageRepository.getFiles(path);
+        var filteredFiles = files.stream().filter(d -> d.startsWith(systemFilePrefix) == showSystemFiles).toList();
         return filteredFiles;
     }
 
