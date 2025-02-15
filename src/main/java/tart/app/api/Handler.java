@@ -1,9 +1,10 @@
 package tart.app.api;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
-import io.vavr.control.Try;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -35,20 +36,29 @@ public abstract class Handler {
     public abstract boolean auth();
 
     public void handle(HttpExchange exchange) {
-        Try.run(() -> execute(exchange))
-                .onFailure(thr -> exceptionHandler.handle(thr, exchange));
+        try {
+            execute(exchange);
+        } catch (Exception ex) {
+            exceptionHandler.handle(ex, exchange);
+        }
     }
 
     protected abstract void execute(HttpExchange exchange) throws Exception;
 
     protected <T> T readRequest(InputStream is, Class<T> type) {
-        return Try.of(() -> objectMapper.readValue(is, type))
-                .getOrElseThrow(ApplicationExceptions.invalidRequest());
+        try {
+            return objectMapper.readValue(is, type);
+        } catch (IOException ex) {
+            throw ApplicationExceptions.invalidRequest().apply(ex);
+        }
     }
 
     protected <T> byte[] writeResponse(T response) {
-        return Try.of(() -> objectMapper.writeValueAsBytes(response))
-                .getOrElseThrow(ApplicationExceptions.invalidRequest());
+        try {
+            return objectMapper.writeValueAsBytes(response);
+        } catch (JsonProcessingException ex) {
+            throw ApplicationExceptions.invalidRequest().apply(ex);
+        }
     }
 
     protected static Headers getHeaders(String key, String value) {

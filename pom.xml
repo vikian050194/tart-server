@@ -28,11 +28,6 @@
             <artifactId>jackson-annotations</artifactId>
             <version>2.18.2</version>
         </dependency>
-        <dependency>
-            <groupId>io.vavr</groupId>
-            <artifactId>vavr</artifactId>
-            <version>0.10.5</version>
-        </dependency>
     </dependencies>
     <build>
         <plugins>

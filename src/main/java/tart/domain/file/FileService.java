@@ -37,7 +37,7 @@ public class FileService {
         var systemFilePrefix = ".";
         var files = imageRepository.getFiles(path);
         // TODO add filtering
-        var filteredFiles = files.stream().filter(d -> d.startsWith(systemFilePrefix) == showSystemFiles && (d.endsWith("jpg") || d.endsWith("jpeg"))).toList();
+        var filteredFiles = files.stream().filter(d -> d.startsWith(systemFilePrefix) == showSystemFiles && (d.endsWith("jpg") || d.endsWith("jpeg") || d.endsWith("png"))).toList();
         return filteredFiles;
     }
 

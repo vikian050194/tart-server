@@ -65,9 +65,9 @@ class InfoHandlerTest extends BaseApiTest {
     @Test
     void testOnlyFiles() throws IOException, InterruptedException, URISyntaxException {
         // Arrange
-        getFileRepository().setFiles(List.of("foo", "bar.png"));
+        getFileRepository().setFiles(List.of("foo.png"));
         var expectedStatus = 200;
-        var expectedBody = new InfoResponse(List.of(), List.of("foo", "bar.png"));
+        var expectedBody = new InfoResponse(List.of(), List.of("foo.png"));
         var client = HttpClient.newHttpClient();
         var uri = new URI("%s/%s".formatted(baseAddress, "info"));
 
@@ -88,9 +88,9 @@ class InfoHandlerTest extends BaseApiTest {
     void testCustomDir() throws IOException, InterruptedException, URISyntaxException {
         // Arrange
         getFileRepository().setDirectories(List.of("root"));
-        getFileRepository().setFiles(List.of("root", "root.png"));
+        getFileRepository().setFiles(List.of("root.png"));
         var expectedStatus = 200;
-        var expectedBody = new InfoResponse(List.of("root"), List.of("root", "root.png"));
+        var expectedBody = new InfoResponse(List.of("root"), List.of("root.png"));
         var client = HttpClient.newHttpClient();
         var testDirName = "root";
         var uri = new URI("%s/%s/%s".formatted(baseAddress, "info", testDirName));
