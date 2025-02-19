@@ -3,10 +3,18 @@ package tart.domain.file;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import tart.core.matcher.FileMatcher;
+import tart.core.matcher.type.JpegFileMatcher;
+import tart.core.matcher.type.JpgFileMatcher;
+import tart.core.matcher.type.Mp4FileMatcher;
+import tart.core.matcher.type.PngFileMatcher;
+import tart.core.matcher.type.SystemFileMatcher;
 
 public class FileService {
 
     private final FileRepository imageRepository;
+    private final List<FileMatcher> matchers = List.of(new JpegFileMatcher(), new JpgFileMatcher(), new PngFileMatcher(), new Mp4FileMatcher());
+    private final FileMatcher systemMatcher = new SystemFileMatcher();
 
     public FileService(FileRepository ir) {
         imageRepository = ir;
@@ -40,13 +48,18 @@ public class FileService {
     }
 
     public List<String> getFiles(List<String> path) {
-        var systemFilePrefix = ".";
-        var files = imageRepository.getFiles(path);
-        // TODO add filtering
-        var filteredFiles = files.stream().filter(d -> d.startsWith(systemFilePrefix) == showSystemFiles() && (d.endsWith("jpg") || d.endsWith("jpeg") || d.endsWith("png"))).toList();
-        return filteredFiles;
+        var files = imageRepository.getFiles(path).stream();
+        files = files.filter(f -> systemMatcher.isMatch(f) == showSystemFiles());
+        files = files.filter(f -> matchers.stream().anyMatch(m -> m.isMatch(f)));
+        return files.toList();
     }
 
+    // TODO add getPossibleYears
+    // TODO add getPossibleMonths
+    // TODO add getPossibleDays
+    // TODO add getAvailableYears
+    // TODO add getAvailableMonths
+    // TODO add getAvailableDays
     public byte[] getFileData(List<String> path) throws IOException {
         return imageRepository.getData(path);
     }

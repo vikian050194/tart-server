@@ -43,9 +43,32 @@ class InfoHandlerTest extends BaseApiTest {
     @Test
     void testOnlyDirs() throws IOException, InterruptedException, URISyntaxException {
         // Arrange
-        getFileRepository().setDirectories(List.of("foo", "bar", "baz"));
+        getFileRepository().setDirectories(List.of("a", "b", "c"));
         var expectedStatus = 200;
-        var expectedBody = new InfoResponse(List.of("foo", "bar", "baz"));
+        var expectedBody = new InfoResponse(List.of("a", "b", "c"));
+        var client = HttpClient.newHttpClient();
+        var uri = new URI("%s/%s".formatted(baseAddress, "info"));
+
+        // Act
+        var response = client.send(
+                HttpRequest.newBuilder().GET().uri(uri).build(),
+                BodyHandlers.ofString());
+
+        // Assert
+        assertEquals(expectedStatus, response.statusCode());
+        var om = new ObjectMapper();
+        String body = response.body();
+        var actualBody = om.readValue(body, InfoResponse.class);
+        assertEquals(expectedBody, actualBody);
+    }
+
+    @Test
+    void testSkipSystemDir() throws IOException, InterruptedException, URISyntaxException {
+        // Arrange
+        // TODO split and/or simplify tests
+        getFileRepository().setDirectories(List.of("a", "b", "c", ".system"));
+        var expectedStatus = 200;
+        var expectedBody = new InfoResponse(List.of("a", "b", "c"));
         var client = HttpClient.newHttpClient();
         var uri = new URI("%s/%s".formatted(baseAddress, "info"));
 
@@ -65,9 +88,56 @@ class InfoHandlerTest extends BaseApiTest {
     @Test
     void testOnlyFiles() throws IOException, InterruptedException, URISyntaxException {
         // Arrange
-        getFileRepository().setFiles(List.of("foo.png"));
+        // TODO split and/or simplify tests
+        getFileRepository().setFiles(List.of("im1.jpeg", "im2.jpg", "im3.png"));
         var expectedStatus = 200;
-        var expectedBody = new InfoResponse(List.of(), List.of("foo.png"));
+        var expectedBody = new InfoResponse(List.of(), List.of("im1.jpeg", "im2.jpg", "im3.png"));
+        var client = HttpClient.newHttpClient();
+        var uri = new URI("%s/%s".formatted(baseAddress, "info"));
+
+        // Act
+        var response = client.send(
+                HttpRequest.newBuilder().GET().uri(uri).build(),
+                BodyHandlers.ofString());
+
+        // Assert
+        assertEquals(expectedStatus, response.statusCode());
+        var om = new ObjectMapper();
+        String body = response.body();
+        var actualBody = om.readValue(body, InfoResponse.class);
+        assertEquals(expectedBody, actualBody);
+    }
+
+    @Test
+    void testSkipSystemFile() throws IOException, InterruptedException, URISyntaxException {
+        // Arrange
+        // TODO split and/or simplify tests
+        getFileRepository().setFiles(List.of("im1.jpeg", "im2.jpg", "im3.png", ".system"));
+        var expectedStatus = 200;
+        var expectedBody = new InfoResponse(List.of(), List.of("im1.jpeg", "im2.jpg", "im3.png"));
+        var client = HttpClient.newHttpClient();
+        var uri = new URI("%s/%s".formatted(baseAddress, "info"));
+
+        // Act
+        var response = client.send(
+                HttpRequest.newBuilder().GET().uri(uri).build(),
+                BodyHandlers.ofString());
+
+        // Assert
+        assertEquals(expectedStatus, response.statusCode());
+        var om = new ObjectMapper();
+        String body = response.body();
+        var actualBody = om.readValue(body, InfoResponse.class);
+        assertEquals(expectedBody, actualBody);
+    }
+
+    @Test
+    void testSkipNonSupportedFile() throws IOException, InterruptedException, URISyntaxException {
+        // Arrange
+        // TODO split and/or simplify tests
+        getFileRepository().setFiles(List.of("im1.jpeg", "im2.jpg", "im3.png", "v.mp4", "file.txt"));
+        var expectedStatus = 200;
+        var expectedBody = new InfoResponse(List.of(), List.of("im1.jpeg", "im2.jpg", "im3.png", "v.mp4"));
         var client = HttpClient.newHttpClient();
         var uri = new URI("%s/%s".formatted(baseAddress, "info"));
 
