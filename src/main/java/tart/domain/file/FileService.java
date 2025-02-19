@@ -12,17 +12,25 @@ public class FileService {
         imageRepository = ir;
     }
 
+    public boolean showSystemDirs() {
+        // TODO extract following flag to properties or UI
+        return false;
+    }
+
+    public boolean showSystemFiles() {
+        // TODO extract following flag to properties or UI
+        return false;
+    }
+
     public List<String> getDirectories() {
         var rootPath = List.of(File.separator);
         return getDirectories(rootPath);
     }
 
     public List<String> getDirectories(List<String> path) {
-        // TODO extract following flag to properties or UI
-        var showSystemDirs = false;
         var systemDirPrefix = ".";
         var dirs = imageRepository.getDirectories(path);
-        var filteredDirs = dirs.stream().filter(d -> d.startsWith(systemDirPrefix) == showSystemDirs).toList();
+        var filteredDirs = dirs.stream().filter(d -> d.startsWith(systemDirPrefix) == showSystemDirs()).toList();
         return filteredDirs;
     }
 
@@ -32,12 +40,10 @@ public class FileService {
     }
 
     public List<String> getFiles(List<String> path) {
-        // TODO extract following flag to properties or UI
-        var showSystemFiles = false;
         var systemFilePrefix = ".";
         var files = imageRepository.getFiles(path);
         // TODO add filtering
-        var filteredFiles = files.stream().filter(d -> d.startsWith(systemFilePrefix) == showSystemFiles && (d.endsWith("jpg") || d.endsWith("jpeg") || d.endsWith("png"))).toList();
+        var filteredFiles = files.stream().filter(d -> d.startsWith(systemFilePrefix) == showSystemFiles() && (d.endsWith("jpg") || d.endsWith("jpeg") || d.endsWith("png"))).toList();
         return filteredFiles;
     }
 

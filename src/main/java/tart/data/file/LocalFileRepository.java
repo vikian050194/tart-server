@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import tart.core.logger.Logger;
 import tart.core.matcher.FileMatcher;
-import tart.core.wrapper.FileWrapper;
 import tart.domain.file.*;
 
 public class LocalFileRepository implements FileRepository {
@@ -59,7 +58,7 @@ public class LocalFileRepository implements FileRepository {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    private final ArrayList<FileWrapper> files = new ArrayList<>();
+    private final ArrayList<File> files = new ArrayList<>();
     private boolean changed = false;
 
     private List<File> listFiles(File dir, FileMatcher fileMatcher) {
@@ -74,7 +73,7 @@ public class LocalFileRepository implements FileRepository {
                     .collect(Collectors.toList());
             queue.addAll(dirs);
             var currentDirFiles = Stream.of(currentDir.listFiles())
-                    .filter(file -> !file.isDirectory() && fileMatcher.isNameMatch(file))
+                    .filter(file -> !file.isDirectory() && fileMatcher.isMatch(file.getName()))
                     .collect(Collectors.toList());
             result.addAll(currentDirFiles);
         }
@@ -96,10 +95,10 @@ public class LocalFileRepository implements FileRepository {
         files.clear();
 
         for (FileMatcher matcher : matchers) {
-            files.addAll(listFiles(dir, matcher).stream().map((f) -> matcher.wrap(f)).toList());
+//            files.addAll(listFiles(dir, matcher).stream().map((f) -> matcher.wrap(f)).toList());
         }
 
-        files.sort((a, b) -> a.getTimestamp().compareTo(b.getTimestamp()));
+//        files.sort((a, b) -> a.getTimestamp().compareTo(b.getTimestamp()));
 
         return !files.isEmpty();
     }
@@ -125,11 +124,11 @@ public class LocalFileRepository implements FileRepository {
         return sourceFile;
     }
 
-    public void delete(FileWrapper targetFile) {
+//    public void delete(FileWrapper targetFile) {
         // TODO what is safest way to remove T instance from ArrayList<T> where T is class?
-        files.remove(targetFile);
-        targetFile.getFile().delete();
-    }
+//        files.remove(targetFile);
+//        targetFile.getFile().delete();
+//    }
 
     public boolean inspect(DirectoryInfo dir, List<FileMatcher> matchers) {
         throw new UnsupportedOperationException("Not supported yet.");

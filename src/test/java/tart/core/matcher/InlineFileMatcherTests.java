@@ -14,7 +14,7 @@ public class InlineFileMatcherTests {
         var expected = true;
 
         // Act
-        var actual = ifm.isNameMatch(testFile);
+        var actual = ifm.isMatch(testFile.getName());
 
         // Assert
         assertEquals(actual, expected);
@@ -28,7 +28,7 @@ public class InlineFileMatcherTests {
         var expected = false;
 
         // Act
-        var actual = ifm.isNameMatch(testFile);
+        var actual = ifm.isMatch(testFile.getName());
 
         // Assert
         assertEquals(actual, expected);
