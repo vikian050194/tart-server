@@ -2,13 +2,13 @@ package tart.core.matcher.data;
 
 import tart.core.matcher.FileMatcher;
 
-public class FileMatcherImg4 extends FileMatcher {
+public class ImgFileMatcher extends FileMatcher {
 
-    public FileMatcherImg4() {
+    public ImgFileMatcher() {
         this(null);
     }
 
-    public FileMatcherImg4(FileMatcher matcher) {
+    public ImgFileMatcher(FileMatcher matcher) {
         super("img_\\d{4}..*", matcher);
     }
 }

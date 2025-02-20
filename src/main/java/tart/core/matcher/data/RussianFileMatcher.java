@@ -2,13 +2,13 @@ package tart.core.matcher.data;
 
 import tart.core.matcher.FileMatcher;
 
-public class FileMatcher86 extends FileMatcher {
+public class RussianFileMatcher extends FileMatcher {
 
-    public FileMatcher86() {
+    public RussianFileMatcher() {
         this(null);
     }
 
-    public FileMatcher86(FileMatcher matcher) {
+    public RussianFileMatcher(FileMatcher matcher) {
         super("\\d{8}_\\d{6}.*", matcher);
     }
 }

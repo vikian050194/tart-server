@@ -21,5 +21,4 @@ public abstract class FileMatcher {
         var isExternalMatch = matcher != null ? matcher.isMatch(string) : true;
         return isCurrentMatch && isExternalMatch;
     }
-
 }
