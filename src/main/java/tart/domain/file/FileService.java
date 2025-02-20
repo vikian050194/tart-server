@@ -12,6 +12,10 @@ import tart.core.matcher.type.SystemFileMatcher;
 
 public class FileService {
 
+    public enum ScanMode {
+        STRICT, RECURSIVE
+    };
+
     private final FileRepository imageRepository;
     private final List<FileMatcher> matchers = List.of(new JpegFileMatcher(), new JpgFileMatcher(), new PngFileMatcher(), new Mp4FileMatcher());
     private final FileMatcher systemMatcher = new SystemFileMatcher();

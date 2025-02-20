@@ -20,7 +20,7 @@ class DataHandlerTest extends BaseApiTest {
         var expectedStatus = 200;
         var expectedBody = new byte[0];
         var client = HttpClient.newHttpClient();
-        var testFileName = "foo.jpeg";
+        var testFileName = "im.jpeg";
         var uri = new URI("%s/%s/%s".formatted(baseAddress, "data", testFileName));
 
         // Act
@@ -41,7 +41,7 @@ class DataHandlerTest extends BaseApiTest {
         var expectedStatus = 200;
         var expectedBody = new byte[0];
         var client = HttpClient.newHttpClient();
-        var testFileName = "foo.jpg";
+        var testFileName = "im.jpg";
         var uri = new URI("%s/%s/%s".formatted(baseAddress, "data", testFileName));
 
         // Act
@@ -62,7 +62,7 @@ class DataHandlerTest extends BaseApiTest {
         var expectedStatus = 200;
         var expectedBody = new byte[0];
         var client = HttpClient.newHttpClient();
-        var testFileName = "foo.png";
+        var testFileName = "im.png";
         var uri = new URI("%s/%s/%s".formatted(baseAddress, "data", testFileName));
 
         // Act
@@ -83,7 +83,7 @@ class DataHandlerTest extends BaseApiTest {
         var expectedStatus = 200;
         var expectedBody = new byte[0];
         var client = HttpClient.newHttpClient();
-        var testFileName = "foo.mp4";
+        var testFileName = "v.mp4";
         var uri = new URI("%s/%s/%s".formatted(baseAddress, "data", testFileName));
 
         // Act
