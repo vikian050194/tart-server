@@ -1,10 +1,10 @@
 package tart.core.examinator;
 
 import java.util.Optional;
-import tart.core.examinator.EnglishFileExaminator.EnglishFileNameParser;
+import tart.core.examinator.EnglishFileNameExaminator.EnglishFileNameParser;
 import tart.core.matcher.FileMatcher;
 
-public class EnglishFileExaminator extends FileNameExaminator<EnglishFileNameParser> {
+public class EnglishFileNameExaminator extends FileNameExaminator<EnglishFileNameParser> {
 
     public class EnglishFileNameParser extends FileNameParser {
 
@@ -17,13 +17,23 @@ public class EnglishFileExaminator extends FileNameExaminator<EnglishFileNamePar
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
+        @Override
+        public Optional<Integer> getMonth() {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        @Override
+        public Optional<Integer> getDay() {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
     }
 
-    public EnglishFileExaminator() {
+    public EnglishFileNameExaminator() {
         this(null);
     }
 
-    public EnglishFileExaminator(FileMatcher matcher) {
+    public EnglishFileNameExaminator(FileMatcher matcher) {
         super("\\d{4}-\\d{2}-\\d{2} \\d{2}-\\d{2}-\\d{2}.*", matcher);
     }
 
