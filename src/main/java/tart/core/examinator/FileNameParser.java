@@ -1,14 +1,15 @@
 package tart.core.examinator;
 
-import java.util.Optional;
+import java.util.List;
 
 public abstract class FileNameParser {
 
     protected String string;
+    protected List<String> chunks;
 
-    public abstract Optional<Integer> getYear();
+    public abstract int getYear();
 
-    public abstract Optional<Integer> getMonth();
+    public abstract int getMonth();
 
-    public abstract Optional<Integer> getDay();
+    public abstract int getDay();
 }

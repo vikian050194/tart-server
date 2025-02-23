@@ -1,6 +1,6 @@
 package tart.core.examinator;
 
-import java.util.Optional;
+import java.util.List;
 import tart.core.examinator.RussianFileNameExaminator.RussianFileNameParser;
 import tart.core.matcher.FileMatcher;
 
@@ -8,23 +8,34 @@ public class RussianFileNameExaminator extends FileNameExaminator<RussianFileNam
 
     public class RussianFileNameParser extends FileNameParser {
 
+        private static final int DATE_INDEX = 0;
+        private static final int START_INDEX = 0;
+        private static final int YEAR_SIZE = 4;
+        private static final int MONTH_SIZE = 2;
+        private static final int DAY_SIZE = 2;
+
         private RussianFileNameParser(String string) {
             this.string = string;
+            chunks = List.of(string.split("[_\\.]"));
         }
 
         @Override
-        public Optional<Integer> getYear() {
-            throw new UnsupportedOperationException("Not supported yet.");
+        public int getYear() {
+            return Integer.parseInt(chunks.get(DATE_INDEX).substring(START_INDEX, YEAR_SIZE));
         }
 
         @Override
-        public Optional<Integer> getMonth() {
-            throw new UnsupportedOperationException("Not supported yet.");
+        public int getMonth() {
+            var beginIndex = START_INDEX + YEAR_SIZE;
+            var endIndex = START_INDEX + YEAR_SIZE + MONTH_SIZE;
+            return Integer.parseInt(chunks.get(DATE_INDEX).substring(beginIndex, endIndex));
         }
 
         @Override
-        public Optional<Integer> getDay() {
-            throw new UnsupportedOperationException("Not supported yet.");
+        public int getDay() {
+            var beginIndex = START_INDEX + YEAR_SIZE + MONTH_SIZE;
+            var endIndex = START_INDEX + YEAR_SIZE + MONTH_SIZE + DAY_SIZE;
+            return Integer.parseInt(chunks.get(DATE_INDEX).substring(beginIndex, endIndex));
         }
 
     }

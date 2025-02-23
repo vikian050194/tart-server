@@ -45,7 +45,7 @@ public class EnglishFileNameExaminatorTests {
         var actual = parser.getYear();
 
         // Assert
-        assertEquals(expected, actual.get());
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -60,7 +60,7 @@ public class EnglishFileNameExaminatorTests {
         var actual = parser.getMonth();
 
         // Assert
-        assertEquals(expected, actual.get());
+        assertEquals(expected, actual);
     }
 
     @Test
@@ -75,6 +75,6 @@ public class EnglishFileNameExaminatorTests {
         var actual = parser.getDay();
 
         // Assert
-        assertEquals(expected, actual.get());
+        assertEquals(expected, actual);
     }
 }

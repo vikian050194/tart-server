@@ -1,6 +1,6 @@
 package tart.core.examinator;
 
-import java.util.Optional;
+import java.util.List;
 import tart.core.examinator.EnglishFileNameExaminator.EnglishFileNameParser;
 import tart.core.matcher.FileMatcher;
 
@@ -10,21 +10,22 @@ public class EnglishFileNameExaminator extends FileNameExaminator<EnglishFileNam
 
         private EnglishFileNameParser(String string) {
             this.string = string;
+            chunks = List.of(string.split("[ -\\.]"));
         }
 
         @Override
-        public Optional<Integer> getYear() {
-            throw new UnsupportedOperationException("Not supported yet.");
+        public int getYear() {
+            return Integer.parseInt(chunks.get(0));
         }
 
         @Override
-        public Optional<Integer> getMonth() {
-            throw new UnsupportedOperationException("Not supported yet.");
+        public int getMonth() {
+            return Integer.parseInt(chunks.get(1));
         }
 
         @Override
-        public Optional<Integer> getDay() {
-            throw new UnsupportedOperationException("Not supported yet.");
+        public int getDay() {
+            return Integer.parseInt(chunks.get(2));
         }
 
     }
