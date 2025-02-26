@@ -56,14 +56,30 @@ public class DataHandler extends Handler {
         exchange.close();
     }
 
+    private String getMimeType(List<String> path) {
+        var fileType = fileService.getFileType(path);
+        // TODO switch vs. rule switch? pros and cons
+        switch (fileType) {
+            case JPEG:
+                return Constants.IMAGE_JPEG;
+            case PNG:
+                return Constants.IMAGE_PNG;
+            case MP4:
+                return Constants.VIDEO_MP4;
+            default:
+                throw new AssertionError();
+        }
+    }
+
     private ResponseEntity<byte[]> doGet(URI uri) throws IOException {
         var fullPath = uri.getPath();
         var filePath = fullPath.substring(url().length());
         var delimiter = "/";
         var path = List.of(filePath.split(delimiter)).stream().filter(p -> !p.isEmpty()).toList();
         var file = fileService.getFileData(path);
+        var mimeType = getMimeType(path);
         return new ResponseEntity<>(file,
-                getHeaders(Constants.CONTENT_TYPE, Constants.IMAGE_JPEG), StatusCode.OK);
+                getHeaders(Constants.CONTENT_TYPE, mimeType), StatusCode.OK);
 
     }
 }

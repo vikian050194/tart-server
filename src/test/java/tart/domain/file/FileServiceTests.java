@@ -153,4 +153,64 @@ public class FileServiceTests {
         // Assert
         assertEquals(expected, actual);
     }
+
+    @Test
+    void testGetFileTypeJpeg() throws UnsupportedOperationException {
+        // Arrange
+        var testFileRepository = new TestFileRepository();
+        var fileService = new FileService(testFileRepository);
+        var testFile = List.of("root", "im.jpeg");
+        var expected = FileService.FileType.JPEG;
+
+        // Act
+        var actual = fileService.getFileType(testFile);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetFileTypeJpg() throws UnsupportedOperationException {
+        // Arrange
+        var testFileRepository = new TestFileRepository();
+        var fileService = new FileService(testFileRepository);
+        var testFile = List.of("root", "im.jpg");
+        var expected = FileService.FileType.JPEG;
+
+        // Act
+        var actual = fileService.getFileType(testFile);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetFileTypePng() throws UnsupportedOperationException {
+        // Arrange
+        var testFileRepository = new TestFileRepository();
+        var fileService = new FileService(testFileRepository);
+        var testFile = List.of("root", "im.png");
+        var expected = FileService.FileType.PNG;
+
+        // Act
+        var actual = fileService.getFileType(testFile);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetFileTypeMp4() throws UnsupportedOperationException {
+        // Arrange
+        var testFileRepository = new TestFileRepository();
+        var fileService = new FileService(testFileRepository);
+        var testFile = List.of("root", "v.mp4");
+        var expected = FileService.FileType.MP4;
+
+        // Act
+        var actual = fileService.getFileType(testFile);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
 }

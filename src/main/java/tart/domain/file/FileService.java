@@ -16,8 +16,16 @@ public class FileService {
         STRICT, RECURSIVE
     };
 
+    public enum FileType {
+        JPEG, PNG, MP4
+    };
+
     private final FileRepository imageRepository;
-    private final List<FileMatcher> matchers = List.of(new JpegFileMatcher(), new JpgFileMatcher(), new PngFileMatcher(), new Mp4FileMatcher());
+    private final FileMatcher jpegMatcher = new JpegFileMatcher();
+    private final FileMatcher jpgMatcher = new JpgFileMatcher();
+    private final FileMatcher pngMatcher = new PngFileMatcher();
+    private final FileMatcher mp4Matcher = new Mp4FileMatcher();
+    private final List<FileMatcher> matchers = List.of(jpegMatcher, jpgMatcher, pngMatcher, mp4Matcher);
     private final FileMatcher systemMatcher = new SystemFileMatcher();
 
     public FileService(FileRepository ir) {
@@ -66,6 +74,20 @@ public class FileService {
     // TODO add getAvailableDays
     public byte[] getFileData(List<String> path) throws IOException {
         return imageRepository.getData(path);
+    }
+
+    public FileType getFileType(List<String> path) throws UnsupportedOperationException {
+        var name = path.get(path.size() - 1);
+        if (jpegMatcher.isMatch(name) || jpgMatcher.isMatch(name)) {
+            return FileType.JPEG;
+        }
+        if (pngMatcher.isMatch(name)) {
+            return FileType.PNG;
+        }
+        if (mp4Matcher.isMatch(name)) {
+            return FileType.MP4;
+        }
+        throw new UnsupportedOperationException(String.format("%s has unsupperted file type.", name));
     }
 
 }
