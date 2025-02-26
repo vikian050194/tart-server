@@ -213,4 +213,20 @@ public class FileServiceTests {
         // Assert
         assertEquals(expected, actual);
     }
+
+    @Test
+    void testGetPossibleYears() {
+        // Arrange
+        var testFileRepository = new TestFileRepository();
+        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.mp4"));
+        var fileService = new FileService(testFileRepository);
+        var testDir = List.of("root");
+        var expected = List.of("2020", "2021");
+
+        // Act
+        var actual = fileService.getPossibleYears(testDir);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
 }

@@ -3,6 +3,8 @@ package tart.domain.file;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import tart.core.examinator.EnglishFileNameExaminator;
+import tart.core.examinator.RussianFileNameExaminator;
 import tart.core.matcher.FileMatcher;
 import tart.core.matcher.type.JpegFileMatcher;
 import tart.core.matcher.type.JpgFileMatcher;
@@ -88,6 +90,14 @@ public class FileService {
             return FileType.MP4;
         }
         throw new UnsupportedOperationException(String.format("%s has unsupperted file type.", name));
+    }
+
+    public List<String> getPossibleYears(List<String> path) {
+        var files = getFiles(path);
+        var englishExaminator = new EnglishFileNameExaminator();
+        var russianExaminator = new RussianFileNameExaminator();
+        var examinators = List.of(englishExaminator, russianExaminator);
+        throw new UnsupportedOperationException("This methos is not implemented yet.");
     }
 
 }
