@@ -2,8 +2,11 @@ package tart.domain.file;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 import tart.core.examinator.EnglishFileNameExaminator;
+import tart.core.examinator.FileNameExaminator;
+import tart.core.examinator.FileNameParser;
 import tart.core.examinator.RussianFileNameExaminator;
 import tart.core.matcher.FileMatcher;
 import tart.core.matcher.type.JpegFileMatcher;
@@ -68,7 +71,6 @@ public class FileService {
         return files.toList();
     }
 
-    // TODO add getPossibleYears
     // TODO add getPossibleMonths
     // TODO add getPossibleDays
     // TODO add getAvailableYears
@@ -92,12 +94,25 @@ public class FileService {
         throw new UnsupportedOperationException(String.format("%s has unsupperted file type.", name));
     }
 
-    public List<String> getPossibleYears(List<String> path) {
+    public List<Integer> getPossibleYears(List<String> path) {
         var files = getFiles(path);
         var englishExaminator = new EnglishFileNameExaminator();
         var russianExaminator = new RussianFileNameExaminator();
         var examinators = List.of(englishExaminator, russianExaminator);
-        throw new UnsupportedOperationException("This methos is not implemented yet.");
+        var possibleYears = new LinkedList<Integer>();
+        for (String file : files) {
+            for (FileNameExaminator<? extends FileNameParser> examinator : examinators) {
+                if (examinator.isMatch(file)) {
+                    var parser = examinator.getNameParser(file);
+                    var year = parser.getYear();
+                    if (possibleYears.contains(year)) {
+                        break;
+                    }
+                    possibleYears.add(year);
+                }
+            }
+        }
+        return possibleYears.stream().sorted().toList();
     }
 
 }
