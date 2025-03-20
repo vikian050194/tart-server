@@ -47,24 +47,22 @@ public class FileService {
         return false;
     }
 
-    public List<String> getDirectories() {
-        var rootPath = List.of(File.separator);
-        return getDirectories(rootPath);
-    }
-
     public List<String> getDirectories(List<String> path) {
+        if (path.isEmpty()) {
+            var rootPath = List.of(File.separator);
+            return getDirectories(rootPath);
+        }
         var systemDirPrefix = ".";
         var dirs = imageRepository.getDirectories(path);
         var filteredDirs = dirs.stream().filter(d -> d.startsWith(systemDirPrefix) == showSystemDirs()).toList();
         return filteredDirs;
     }
 
-    public List<String> getFiles() {
-        var rootPath = List.of(File.separator);
-        return getFiles(rootPath);
-    }
-
     public List<String> getFiles(List<String> path) {
+        if (path.isEmpty()) {
+            var rootPath = List.of(File.separator);
+            return getFiles(rootPath);
+        }
         var files = imageRepository.getFiles(path).stream();
         files = files.filter(f -> systemMatcher.isMatch(f) == showSystemFiles());
         files = files.filter(f -> matchers.stream().anyMatch(m -> m.isMatch(f)));
@@ -73,7 +71,7 @@ public class FileService {
 
     // TODO add getPossibleMonths
     // TODO add getPossibleDays
-    // TODO add getAvailableYears
+    // TODO add getAvailableYears or store state on client side and use simple getYears for root filter-free state and for non-root filtered state?
     // TODO add getAvailableMonths
     // TODO add getAvailableDays
     public byte[] getFileData(List<String> path) throws IOException {
@@ -94,25 +92,51 @@ public class FileService {
         throw new UnsupportedOperationException(String.format("%s has unsupperted file type.", name));
     }
 
-    public List<Integer> getPossibleYears(List<String> path) {
-        var files = getFiles(path);
+    private FileNameParser getFileNameParser(String file) {
         var englishExaminator = new EnglishFileNameExaminator();
         var russianExaminator = new RussianFileNameExaminator();
         var examinators = List.of(englishExaminator, russianExaminator);
-        var possibleYears = new LinkedList<Integer>();
-        for (String file : files) {
-            for (FileNameExaminator<? extends FileNameParser> examinator : examinators) {
-                if (examinator.isMatch(file)) {
-                    var parser = examinator.getNameParser(file);
-                    var year = parser.getYear();
-                    if (possibleYears.contains(year)) {
-                        break;
-                    }
-                    possibleYears.add(year);
-                }
+        // TODO is generic examinator necessary class structure?
+        for (FileNameExaminator<? extends FileNameParser> examinator : examinators) {
+            if (examinator.isMatch(file)) {
+                return examinator.getNameParser(file);
             }
         }
-        return possibleYears.stream().sorted().toList();
+        // TODO Optional or null?
+        return null;
+    }
+
+    public List<Integer> getYears(List<String> path) {
+        return getYears(path, new DateFilter());
+    }
+
+    public List<Integer> getYears(List<String> path, DateFilter filter) {
+        if (path.isEmpty()) {
+            var rootPath = List.of(File.separator);
+            return getYears(rootPath, filter);
+        }
+        var files = getFiles(path);
+        var years = new LinkedList<Integer>();
+        for (String file : files) {
+            var parser = getFileNameParser(file);
+            if (parser == null) {
+                continue;
+            }
+            var day = parser.getDay();
+            if (!(filter.days.isEmpty() || filter.days.contains(day))) {
+                continue;
+            }
+            var month = parser.getMonth();
+            if (!(filter.months.isEmpty() || filter.months.contains(month))) {
+                continue;
+            }
+            var year = parser.getYear();
+            if (years.contains(year)) {
+                continue;
+            }
+            years.add(year);
+        }
+        return years.stream().sorted().toList();
     }
 
 }

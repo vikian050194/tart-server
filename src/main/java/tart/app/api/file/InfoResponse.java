@@ -1,5 +1,6 @@
 package tart.app.api.file;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -7,6 +8,7 @@ public class InfoResponse {
 
     public List<String> dirs;
     public List<String> files;
+    public List<Integer> years;
 
     public InfoResponse() {
         this(List.of(), List.of());
@@ -19,6 +21,7 @@ public class InfoResponse {
     public InfoResponse(List<String> d, List<String> f) {
         dirs = d;
         files = f;
+        years = new ArrayList<>();
     }
 
     @Override

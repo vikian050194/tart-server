@@ -107,4 +107,27 @@ class InfoHandlerTest extends BaseApiTest {
         var actualBody = om.readValue(body, InfoResponse.class);
         assertEquals(expectedBody, actualBody);
     }
+
+    @Test
+    void testYears() throws IOException, InterruptedException, URISyntaxException {
+        // Arrange
+        getFileRepository().setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.mp4"));
+        var expectedStatus = 200;
+        var expectedYears = List.of(2020, 2021);
+        var client = HttpClient.newHttpClient();
+        var testDirName = "root";
+        var uri = new URI("%s/%s/%s".formatted(baseAddress, "info", testDirName));
+
+        // Act
+        var response = client.send(
+                HttpRequest.newBuilder().GET().uri(uri).build(),
+                BodyHandlers.ofString());
+
+        // Assert
+        assertEquals(expectedStatus, response.statusCode());
+        var om = new ObjectMapper();
+        String body = response.body();
+        var actualBody = om.readValue(body, InfoResponse.class);
+        assertEquals(expectedYears, actualBody.years);
+    }
 }

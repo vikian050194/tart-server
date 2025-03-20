@@ -1,6 +1,7 @@
 package tart.domain.file;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
@@ -37,11 +38,12 @@ public class FileServiceTests {
     void testGetDirectoriesEmpty() throws IOException, InterruptedException {
         // Arrange
         var testFileRepository = new TestFileRepository();
+        var testPath = Collections.<String>emptyList();
         var fileService = new FileService(testFileRepository);
         var expected = List.of();
 
         // Act
-        var actual = fileService.getDirectories();
+        var actual = fileService.getDirectories(testPath);
 
         // Assert
         assertEquals(expected, actual);
@@ -52,11 +54,12 @@ public class FileServiceTests {
         // Arrange
         var testFileRepository = new TestFileRepository();
         testFileRepository.setDirectories(List.of("a", "b", "c"));
+        var testPath = Collections.<String>emptyList();
         var fileService = new FileService(testFileRepository);
         var expected = List.of("a", "b", "c");
 
         // Act
-        var actual = fileService.getDirectories();
+        var actual = fileService.getDirectories(testPath);
 
         // Assert
         assertEquals(expected, actual);
@@ -67,11 +70,12 @@ public class FileServiceTests {
         // Arrange
         var testFileRepository = new TestFileRepository();
         testFileRepository.setDirectories(List.of("regular", ".system"));
+        var testPath = Collections.<String>emptyList();
         var fileService = new FileService(testFileRepository);
         var expected = List.of("regular");
 
         // Act
-        var actual = fileService.getDirectories();
+        var actual = fileService.getDirectories(testPath);
 
         // Assert
         assertEquals(expected, actual);
@@ -98,11 +102,12 @@ public class FileServiceTests {
         // Arrange
         var testFileRepository = new TestFileRepository();
         testFileRepository.setFiles(List.of("im1.jpeg", "im2.jpg", "im3.png", "v.mp4"));
+        var testPath = Collections.<String>emptyList();
         var fileService = new FileService(testFileRepository);
         var expected = List.of("im1.jpeg", "im2.jpg", "im3.png", "v.mp4");
 
         // Act
-        var actual = fileService.getFiles();
+        var actual = fileService.getFiles(testPath);
 
         // Assert
         assertEquals(expected, actual);
@@ -113,11 +118,12 @@ public class FileServiceTests {
         // Arrange
         var testFileRepository = new TestFileRepository();
         testFileRepository.setFiles(List.of("regular.jpeg", ".system"));
+        var testPath = Collections.<String>emptyList();
         var fileService = new FileService(testFileRepository);
         var expected = List.of("regular.jpeg");
 
         // Act
-        var actual = fileService.getFiles();
+        var actual = fileService.getFiles(testPath);
 
         // Assert
         assertEquals(expected, actual);
@@ -128,11 +134,12 @@ public class FileServiceTests {
         // Arrange
         var testFileRepository = new TestFileRepository();
         testFileRepository.setFiles(List.of("regular.jpeg", "notes.txt"));
+        var testPath = Collections.<String>emptyList();
         var fileService = new FileService(testFileRepository);
         var expected = List.of("regular.jpeg");
 
         // Act
-        var actual = fileService.getFiles();
+        var actual = fileService.getFiles(testPath);
 
         // Assert
         assertEquals(expected, actual);
@@ -215,7 +222,7 @@ public class FileServiceTests {
     }
 
     @Test
-    void testGetPossibleYears() {
+    void testGetYears() {
         // Arrange
         var testFileRepository = new TestFileRepository();
         testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.mp4"));
@@ -224,14 +231,14 @@ public class FileServiceTests {
         var expected = List.of(2020, 2021);
 
         // Act
-        var actual = fileService.getPossibleYears(testDir);
+        var actual = fileService.getYears(testDir);
 
         // Assert
         assertEquals(expected, actual);
     }
 
     @Test
-    void testGetPossibleYearsOrder() {
+    void testGetYearsOrder() {
         // Arrange
         var testFileRepository = new TestFileRepository();
         testFileRepository.setFiles(List.of("20210502_110954.mp4", "2020-04-09 21-11-40.JPG"));
@@ -240,7 +247,60 @@ public class FileServiceTests {
         var expected = List.of(2020, 2021);
 
         // Act
-        var actual = fileService.getPossibleYears(testDir);
+        var actual = fileService.getYears(testDir);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetYearsDouble() {
+        // Arrange
+        var testFileRepository = new TestFileRepository();
+        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "2020-04-09 21-11-50.JPG", "2021-04-09 21-11-50.JPG"));
+        var fileService = new FileService(testFileRepository);
+        var testDir = List.of("root");
+        var testFilter = new DateFilter();
+        var expected = List.of(2020, 2021);
+
+        // Act
+        var actual = fileService.getYears(testDir, testFilter);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetYearsWithDayFilter() {
+        // Arrange
+        var testFileRepository = new TestFileRepository();
+        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.mp4"));
+        var fileService = new FileService(testFileRepository);
+        var testDir = List.of("root");
+        var testFilter = new DateFilter();
+        testFilter.days.add(9);
+        var expected = List.of(2020);
+
+        // Act
+        var actual = fileService.getYears(testDir, testFilter);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetYearsWithMonthFilter() {
+        // Arrange
+        var testFileRepository = new TestFileRepository();
+        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.mp4"));
+        var fileService = new FileService(testFileRepository);
+        var testDir = List.of("root");
+        var testFilter = new DateFilter();
+        testFilter.months.add(4);
+        var expected = List.of(2020);
+
+        // Act
+        var actual = fileService.getYears(testDir, testFilter);
 
         // Assert
         assertEquals(expected, actual);

@@ -62,16 +62,12 @@ public class InfoHandler extends Handler {
         var delimiter = "/";
         var path = List.of(dirPath.split(delimiter)).stream().filter(p -> !p.isEmpty()).toList();
 
-        if (path.isEmpty()) {
-            var dirs = fileService.getDirectories();
-            var files = fileService.getFiles();
-            return new ResponseEntity<>(new InfoResponse(dirs, files),
-                    getHeaders(Constants.CONTENT_TYPE, Constants.APPLICATION_JSON), StatusCode.OK);
-        }
-
         var dirs = fileService.getDirectories(path);
         var files = fileService.getFiles(path);
-        return new ResponseEntity<>(new InfoResponse(dirs, files),
+        var years = fileService.getYears(path);
+        var r = new InfoResponse(dirs, files);
+        r.years.addAll(years);
+        return new ResponseEntity<>(r,
                 getHeaders(Constants.CONTENT_TYPE, Constants.APPLICATION_JSON), StatusCode.OK);
 
     }

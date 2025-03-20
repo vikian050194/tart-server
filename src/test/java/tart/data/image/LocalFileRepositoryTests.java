@@ -11,9 +11,9 @@ public class LocalFileRepositoryTests {
     @Test
     public void getDirectoriesAtTarget() {
         // Arrange
-        var target = List.of("home", "kirill", "git");
+        var target = List.of("home", "kirill", "git", "tart");
         FileRepository fr = new LocalFileRepository();
-        var expectedSize = 32;
+        var expectedSize = 2;
 
         // Act
         var actualSize = fr.getDirectories(target).size();
