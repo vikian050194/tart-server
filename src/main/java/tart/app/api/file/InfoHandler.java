@@ -5,9 +5,11 @@ import com.sun.net.httpserver.HttpExchange;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
+import java.util.Collections;
 import java.util.List;
 import tart.app.api.*;
 import tart.app.errors.*;
+import tart.domain.file.DateFilter;
 import tart.domain.file.FileService;
 
 public class InfoHandler extends Handler {
@@ -57,14 +59,20 @@ public class InfoHandler extends Handler {
     }
 
     private ResponseEntity<InfoResponse> doGet(URI uri) throws IOException {
+        var params = splitQuery(uri.getRawQuery());
+        // TODO extract magic string
+        var filter = new DateFilter();
+        var yearFilter = params.getOrDefault("year", Collections.<String>emptyList()).stream().map(Integer::valueOf).toList();
+        filter.years.addAll(yearFilter);
+
         var fullPath = uri.getPath();
         var dirPath = fullPath.substring(url().length());
         var delimiter = "/";
         var path = List.of(dirPath.split(delimiter)).stream().filter(p -> !p.isEmpty()).toList();
 
         var dirs = fileService.getDirectories(path);
-        var files = fileService.getFiles(path);
-        var years = fileService.getYears(path);
+        var files = fileService.getFiles(path, filter);
+        var years = fileService.getYears(path, filter);
         var r = new InfoResponse(dirs, files);
         r.years.addAll(years);
         return new ResponseEntity<>(r,

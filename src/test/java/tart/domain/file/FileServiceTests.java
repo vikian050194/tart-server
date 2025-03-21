@@ -101,13 +101,14 @@ public class FileServiceTests {
     void testGetFiles() throws IOException, InterruptedException {
         // Arrange
         var testFileRepository = new TestFileRepository();
-        testFileRepository.setFiles(List.of("im1.jpeg", "im2.jpg", "im3.png", "v.mp4"));
+        testFileRepository.setFiles(List.of("11112233_445566.jpeg", "11112233_445566.jpg", "11112233_445566.png", "11112233_445566.mp4"));
         var testPath = Collections.<String>emptyList();
         var fileService = new FileService(testFileRepository);
-        var expected = List.of("im1.jpeg", "im2.jpg", "im3.png", "v.mp4");
+        var testFilter = new DateFilter();
+        var expected = List.of("11112233_445566.jpeg", "11112233_445566.jpg", "11112233_445566.png", "11112233_445566.mp4");
 
         // Act
-        var actual = fileService.getFiles(testPath);
+        var actual = fileService.getFiles(testPath, testFilter);
 
         // Assert
         assertEquals(expected, actual);
@@ -117,13 +118,14 @@ public class FileServiceTests {
     void testGetFilesFilterSystemFile() throws IOException, InterruptedException {
         // Arrange
         var testFileRepository = new TestFileRepository();
-        testFileRepository.setFiles(List.of("regular.jpeg", ".system"));
+        testFileRepository.setFiles(List.of("11112233_445566.jpeg", ".system"));
         var testPath = Collections.<String>emptyList();
         var fileService = new FileService(testFileRepository);
-        var expected = List.of("regular.jpeg");
+        var testFilter = new DateFilter();
+        var expected = List.of("11112233_445566.jpeg");
 
         // Act
-        var actual = fileService.getFiles(testPath);
+        var actual = fileService.getFiles(testPath, testFilter);
 
         // Assert
         assertEquals(expected, actual);
@@ -133,13 +135,14 @@ public class FileServiceTests {
     void testGetFilesFilterNonSupportedFile() throws IOException, InterruptedException {
         // Arrange
         var testFileRepository = new TestFileRepository();
-        testFileRepository.setFiles(List.of("regular.jpeg", "notes.txt"));
+        testFileRepository.setFiles(List.of("11112233_445566.jpeg", "notes.txt"));
         var testPath = Collections.<String>emptyList();
         var fileService = new FileService(testFileRepository);
-        var expected = List.of("regular.jpeg");
+        var testFilter = new DateFilter();
+        var expected = List.of("11112233_445566.jpeg");
 
         // Act
-        var actual = fileService.getFiles(testPath);
+        var actual = fileService.getFiles(testPath, testFilter);
 
         // Assert
         assertEquals(expected, actual);
@@ -149,13 +152,32 @@ public class FileServiceTests {
     void testGetFilesCustomDir() throws IOException, InterruptedException {
         // Arrange
         var testFileRepository = new TestFileRepository();
-        testFileRepository.setFiles(List.of("regular.jpeg"));
+        testFileRepository.setFiles(List.of("11112233_445566.jpeg"));
         var testDir = List.of("custom");
         var fileService = new FileService(testFileRepository);
-        var expected = List.of("regular.jpeg");
+        var testFilter = new DateFilter();
+        var expected = List.of("11112233_445566.jpeg");
 
         // Act
-        var actual = fileService.getFiles(testDir);
+        var actual = fileService.getFiles(testDir, testFilter);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetFilesFilterYear() throws IOException, InterruptedException {
+        // Arrange
+        var testFileRepository = new TestFileRepository();
+        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.mp4"));
+        var testDir = List.of("root");
+        var fileService = new FileService(testFileRepository);
+        var testFilter = new DateFilter();
+        testFilter.years.add(2020);
+        var expected = List.of("2020-04-09 21-11-40.JPG");
+
+        // Act
+        var actual = fileService.getFiles(testDir, testFilter);
 
         // Assert
         assertEquals(expected, actual);
@@ -228,10 +250,11 @@ public class FileServiceTests {
         testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.mp4"));
         var fileService = new FileService(testFileRepository);
         var testDir = List.of("root");
+        var testFilter = new DateFilter();
         var expected = List.of(2020, 2021);
 
         // Act
-        var actual = fileService.getYears(testDir);
+        var actual = fileService.getYears(testDir, testFilter);
 
         // Assert
         assertEquals(expected, actual);
@@ -244,10 +267,11 @@ public class FileServiceTests {
         testFileRepository.setFiles(List.of("20210502_110954.mp4", "2020-04-09 21-11-40.JPG"));
         var fileService = new FileService(testFileRepository);
         var testDir = List.of("root");
+        var testFilter = new DateFilter();
         var expected = List.of(2020, 2021);
 
         // Act
-        var actual = fileService.getYears(testDir);
+        var actual = fileService.getYears(testDir, testFilter);
 
         // Assert
         assertEquals(expected, actual);

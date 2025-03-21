@@ -65,9 +65,9 @@ class InfoHandlerTest extends BaseApiTest {
     @Test
     void testOnlyFiles() throws IOException, InterruptedException, URISyntaxException {
         // Arrange
-        getFileRepository().setFiles(List.of("im1.jpeg", "im2.jpg", "im3.png"));
+        getFileRepository().setFiles(List.of("11112233_445566.jpeg", "11112233_445566.jpg", "11112233_445566.png"));
         var expectedStatus = 200;
-        var expectedBody = new InfoResponse(List.of(), List.of("im1.jpeg", "im2.jpg", "im3.png"));
+        var expectedBody = new InfoResponse(List.of(), List.of("11112233_445566.jpeg", "11112233_445566.jpg", "11112233_445566.png"));
         var client = HttpClient.newHttpClient();
         var uri = new URI("%s/%s".formatted(baseAddress, "info"));
 
@@ -88,9 +88,9 @@ class InfoHandlerTest extends BaseApiTest {
     void testCustomDir() throws IOException, InterruptedException, URISyntaxException {
         // Arrange
         getFileRepository().setDirectories(List.of("root"));
-        getFileRepository().setFiles(List.of("root.png"));
+        getFileRepository().setFiles(List.of("11112233_445566.png"));
         var expectedStatus = 200;
-        var expectedBody = new InfoResponse(List.of("root"), List.of("root.png"));
+        var expectedBody = new InfoResponse(List.of("root"), List.of("11112233_445566.png"));
         var client = HttpClient.newHttpClient();
         var testDirName = "root";
         var uri = new URI("%s/%s/%s".formatted(baseAddress, "info", testDirName));
@@ -117,6 +117,30 @@ class InfoHandlerTest extends BaseApiTest {
         var client = HttpClient.newHttpClient();
         var testDirName = "root";
         var uri = new URI("%s/%s/%s".formatted(baseAddress, "info", testDirName));
+
+        // Act
+        var response = client.send(
+                HttpRequest.newBuilder().GET().uri(uri).build(),
+                BodyHandlers.ofString());
+
+        // Assert
+        assertEquals(expectedStatus, response.statusCode());
+        var om = new ObjectMapper();
+        String body = response.body();
+        var actualBody = om.readValue(body, InfoResponse.class);
+        assertEquals(expectedYears, actualBody.years);
+    }
+
+    @Test
+    void testYearsFilter() throws IOException, InterruptedException, URISyntaxException {
+        // Arrange
+        getFileRepository().setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.mp4"));
+        var expectedStatus = 200;
+        var expectedYears = List.of(2020);
+        var client = HttpClient.newHttpClient();
+        var testDirName = "root";
+        var testYear = 2020;
+        var uri = new URI("%s/%s/%s?year=%s".formatted(baseAddress, "info", testDirName, testYear));
 
         // Act
         var response = client.send(

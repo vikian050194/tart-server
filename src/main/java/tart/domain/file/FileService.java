@@ -58,14 +58,35 @@ public class FileService {
         return filteredDirs;
     }
 
-    public List<String> getFiles(List<String> path) {
+    private boolean filterFile(DateFilter filter, String file) {
+        var parser = getFileNameParser(file);
+        if (parser == null) {
+            return false;
+        }
+        var day = parser.getDay();
+        if (!filter.days.isEmpty() && filter.days.contains(day)) {
+            return true;
+        }
+        var month = parser.getMonth();
+        if (!filter.months.isEmpty() && filter.months.contains(month)) {
+            return true;
+        }
+        var year = parser.getYear();
+        if (!filter.years.isEmpty() && filter.years.contains(year)) {
+            return true;
+        }
+        return filter.days.isEmpty() && filter.months.isEmpty() && filter.years.isEmpty();
+    }
+
+    public List<String> getFiles(List<String> path, DateFilter filter) {
         if (path.isEmpty()) {
             var rootPath = List.of(File.separator);
-            return getFiles(rootPath);
+            return getFiles(rootPath, filter);
         }
         var files = imageRepository.getFiles(path).stream();
         files = files.filter(f -> systemMatcher.isMatch(f) == showSystemFiles());
         files = files.filter(f -> matchers.stream().anyMatch(m -> m.isMatch(f)));
+        files = files.filter(f -> filterFile(filter, f));
         return files.toList();
     }
 
@@ -106,16 +127,12 @@ public class FileService {
         return null;
     }
 
-    public List<Integer> getYears(List<String> path) {
-        return getYears(path, new DateFilter());
-    }
-
     public List<Integer> getYears(List<String> path, DateFilter filter) {
         if (path.isEmpty()) {
             var rootPath = List.of(File.separator);
             return getYears(rootPath, filter);
         }
-        var files = getFiles(path);
+        var files = getFiles(path, filter);
         var years = new LinkedList<Integer>();
         for (String file : files) {
             var parser = getFileNameParser(file);
