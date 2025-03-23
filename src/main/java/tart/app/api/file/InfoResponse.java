@@ -9,6 +9,7 @@ public class InfoResponse {
     public List<String> dirs;
     public List<String> files;
     public List<Integer> years;
+    public List<Integer> months;
 
     public InfoResponse() {
         this(List.of(), List.of());
@@ -22,6 +23,7 @@ public class InfoResponse {
         dirs = d;
         files = f;
         years = new ArrayList<>();
+        months = new ArrayList<>();
     }
 
     @Override

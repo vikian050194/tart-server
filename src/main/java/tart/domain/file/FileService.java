@@ -90,11 +90,7 @@ public class FileService {
         return files.toList();
     }
 
-    // TODO add getPossibleMonths
-    // TODO add getPossibleDays
-    // TODO add getAvailableYears or store state on client side and use simple getYears for root filter-free state and for non-root filtered state?
-    // TODO add getAvailableMonths
-    // TODO add getAvailableDays
+    // TODO add getDays
     public byte[] getFileData(List<String> path) throws IOException {
         return imageRepository.getData(path);
     }
@@ -139,14 +135,6 @@ public class FileService {
             if (parser == null) {
                 continue;
             }
-            var day = parser.getDay();
-            if (!(filter.days.isEmpty() || filter.days.contains(day))) {
-                continue;
-            }
-            var month = parser.getMonth();
-            if (!(filter.months.isEmpty() || filter.months.contains(month))) {
-                continue;
-            }
             var year = parser.getYear();
             if (years.contains(year)) {
                 continue;
@@ -154,6 +142,27 @@ public class FileService {
             years.add(year);
         }
         return years.stream().sorted().toList();
+    }
+
+    public List<Integer> getMonths(List<String> path, DateFilter filter) {
+        if (path.isEmpty()) {
+            var rootPath = List.of(File.separator);
+            return getMonths(rootPath, filter);
+        }
+        var files = getFiles(path, filter);
+        var months = new LinkedList<Integer>();
+        for (String file : files) {
+            var parser = getFileNameParser(file);
+            if (parser == null) {
+                continue;
+            }
+            var month = parser.getMonth();
+            if (months.contains(month)) {
+                continue;
+            }
+            months.add(month);
+        }
+        return months.stream().sorted().toList();
     }
 
 }

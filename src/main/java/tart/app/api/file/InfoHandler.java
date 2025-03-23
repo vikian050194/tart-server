@@ -62,8 +62,10 @@ public class InfoHandler extends Handler {
         var params = splitQuery(uri.getRawQuery());
         // TODO extract magic string
         var filter = new DateFilter();
-        var yearFilter = params.getOrDefault("year", Collections.<String>emptyList()).stream().map(Integer::valueOf).toList();
-        filter.years.addAll(yearFilter);
+        var yearsFilterValues = params.getOrDefault("years", Collections.<String>emptyList()).stream().map(Integer::valueOf).toList();
+        filter.years.addAll(yearsFilterValues);
+        var monthsFilterValues = params.getOrDefault("months", Collections.<String>emptyList()).stream().map(Integer::valueOf).toList();
+        filter.months.addAll(monthsFilterValues);
 
         var fullPath = uri.getPath();
         var dirPath = fullPath.substring(url().length());
@@ -73,8 +75,10 @@ public class InfoHandler extends Handler {
         var dirs = fileService.getDirectories(path);
         var files = fileService.getFiles(path, filter);
         var years = fileService.getYears(path, filter);
+        var months = fileService.getMonths(path, filter);
         var r = new InfoResponse(dirs, files);
         r.years.addAll(years);
+        r.months.addAll(months);
         return new ResponseEntity<>(r,
                 getHeaders(Constants.CONTENT_TYPE, Constants.APPLICATION_JSON), StatusCode.OK);
 
