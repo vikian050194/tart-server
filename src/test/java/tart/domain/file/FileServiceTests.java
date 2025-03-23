@@ -101,11 +101,13 @@ public class FileServiceTests {
     void testGetFiles() throws IOException, InterruptedException {
         // Arrange
         var testFileRepository = new TestFileRepository();
-        testFileRepository.setFiles(List.of("11112233_445566.jpeg", "11112233_445566.jpg", "11112233_445566.png", "11112233_445566.mp4"));
+        // TODO add mp4
+        testFileRepository.setFiles(List.of("11112233_445566.jpeg", "11112233_445566.jpg", "11112233_445566.png"));
         var testPath = Collections.<String>emptyList();
         var fileService = new FileService(testFileRepository);
         var testFilter = new DateFilter();
-        var expected = List.of("11112233_445566.jpeg", "11112233_445566.jpg", "11112233_445566.png", "11112233_445566.mp4");
+        // TODO png -> mp4
+        var expected = List.of("11112233_445566.jpeg", "11112233_445566.jpg", "11112233_445566.png");
 
         // Act
         var actual = fileService.getFiles(testPath, testFilter);
@@ -247,7 +249,8 @@ public class FileServiceTests {
     void testGetYears() {
         // Arrange
         var testFileRepository = new TestFileRepository();
-        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.mp4"));
+        // TODO png -> mp4
+        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.png"));
         var fileService = new FileService(testFileRepository);
         var testDir = List.of("root");
         var testFilter = new DateFilter();
@@ -264,7 +267,8 @@ public class FileServiceTests {
     void testGetYearsOrder() {
         // Arrange
         var testFileRepository = new TestFileRepository();
-        testFileRepository.setFiles(List.of("20210502_110954.mp4", "2020-04-09 21-11-40.JPG"));
+        // TODO png -> mp4
+        testFileRepository.setFiles(List.of("20210502_110954.png", "2020-04-09 21-11-40.JPG"));
         var fileService = new FileService(testFileRepository);
         var testDir = List.of("root");
         var testFilter = new DateFilter();
@@ -352,7 +356,8 @@ public class FileServiceTests {
     void testGetMonths() {
         // Arrange
         var testFileRepository = new TestFileRepository();
-        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.mp4"));
+        // TODO png -> mp4
+        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.png"));
         var fileService = new FileService(testFileRepository);
         var testDir = List.of("root");
         var testFilter = new DateFilter();
@@ -369,7 +374,8 @@ public class FileServiceTests {
     void testGetMonthsOrder() {
         // Arrange
         var testFileRepository = new TestFileRepository();
-        testFileRepository.setFiles(List.of("20210502_110954.mp4", "2020-04-09 21-11-40.JPG"));
+        // TODO png -> mp4
+        testFileRepository.setFiles(List.of("20210502_110954.png", "2020-04-09 21-11-40.JPG"));
         var fileService = new FileService(testFileRepository);
         var testDir = List.of("root");
         var testFilter = new DateFilter();

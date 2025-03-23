@@ -111,7 +111,8 @@ class InfoHandlerTest extends BaseApiTest {
     @Test
     void testYears() throws IOException, InterruptedException, URISyntaxException {
         // Arrange
-        getFileRepository().setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.mp4"));
+        // TODO png -> mp4
+        getFileRepository().setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.png"));
         var expectedStatus = 200;
         var expectedYears = List.of(2020, 2021);
         var client = HttpClient.newHttpClient();

@@ -30,7 +30,8 @@ public class FileService {
     private final FileMatcher jpgMatcher = new JpgFileMatcher();
     private final FileMatcher pngMatcher = new PngFileMatcher();
     private final FileMatcher mp4Matcher = new Mp4FileMatcher();
-    private final List<FileMatcher> matchers = List.of(jpegMatcher, jpgMatcher, pngMatcher, mp4Matcher);
+    // TODO use mp4Matcher
+    private final List<FileMatcher> matchers = List.of(jpegMatcher, jpgMatcher, pngMatcher);
     private final FileMatcher systemMatcher = new SystemFileMatcher();
 
     public FileService(FileRepository ir) {
