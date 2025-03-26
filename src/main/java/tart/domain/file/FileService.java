@@ -65,18 +65,12 @@ public class FileService {
             return false;
         }
         var day = parser.getDay();
-        if (!filter.days.isEmpty() && filter.days.contains(day)) {
-            return true;
-        }
+        var dayMatches = filter.days.isEmpty() || filter.days.contains(day);
         var month = parser.getMonth();
-        if (!filter.months.isEmpty() && filter.months.contains(month)) {
-            return true;
-        }
+        var monthMatches = filter.months.isEmpty() || filter.months.contains(month);
         var year = parser.getYear();
-        if (!filter.years.isEmpty() && filter.years.contains(year)) {
-            return true;
-        }
-        return filter.days.isEmpty() && filter.months.isEmpty() && filter.years.isEmpty();
+        var yearMatches = filter.years.isEmpty() || filter.years.contains(year);
+        return dayMatches && monthMatches && yearMatches;
     }
 
     public List<String> getFiles(List<String> path, DateFilter filter) {
@@ -166,4 +160,24 @@ public class FileService {
         return months.stream().sorted().toList();
     }
 
+    public List<Integer> getDays(List<String> path, DateFilter filter) {
+        if (path.isEmpty()) {
+            var rootPath = List.of(File.separator);
+            return getDays(rootPath, filter);
+        }
+        var files = getFiles(path, filter);
+        var days = new LinkedList<Integer>();
+        for (String file : files) {
+            var parser = getFileNameParser(file);
+            if (parser == null) {
+                continue;
+            }
+            var day = parser.getDay();
+            if (days.contains(day)) {
+                continue;
+            }
+            days.add(day);
+        }
+        return days.stream().sorted().toList();
+    }
 }

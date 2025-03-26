@@ -171,12 +171,68 @@ public class FileServiceTests {
     void testGetFilesFilterYear() throws IOException, InterruptedException {
         // Arrange
         var testFileRepository = new TestFileRepository();
-        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.mp4"));
+        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.png"));
         var testDir = List.of("root");
         var fileService = new FileService(testFileRepository);
         var testFilter = new DateFilter();
         testFilter.years.add(2020);
         var expected = List.of("2020-04-09 21-11-40.JPG");
+
+        // Act
+        var actual = fileService.getFiles(testDir, testFilter);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetFilesFilterMonth() throws IOException, InterruptedException {
+        // Arrange
+        var testFileRepository = new TestFileRepository();
+        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.png"));
+        var testDir = List.of("root");
+        var fileService = new FileService(testFileRepository);
+        var testFilter = new DateFilter();
+        testFilter.months.add(4);
+        var expected = List.of("2020-04-09 21-11-40.JPG");
+
+        // Act
+        var actual = fileService.getFiles(testDir, testFilter);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetFilesFilterDay() throws IOException, InterruptedException {
+        // Arrange
+        var testFileRepository = new TestFileRepository();
+        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.png"));
+        var testDir = List.of("root");
+        var fileService = new FileService(testFileRepository);
+        var testFilter = new DateFilter();
+        testFilter.days.add(9);
+        var expected = List.of("2020-04-09 21-11-40.JPG");
+
+        // Act
+        var actual = fileService.getFiles(testDir, testFilter);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetFilesAllFilters() throws IOException, InterruptedException {
+        // Arrange
+        var testFileRepository = new TestFileRepository();
+        testFileRepository.setFiles(List.of("2020-12-09 21-11-40.JPG", "2021-04-09 11-09-54.png"));
+        var testDir = List.of("root");
+        var fileService = new FileService(testFileRepository);
+        var testFilter = new DateFilter();
+        testFilter.years.add(2021);
+        testFilter.months.add(4);
+        testFilter.days.add(9);
+        var expected = List.of("2021-04-09 11-09-54.png");
 
         // Act
         var actual = fileService.getFiles(testDir, testFilter);
@@ -302,7 +358,7 @@ public class FileServiceTests {
     void testGetYearsWithDaysFilter() {
         // Arrange
         var testFileRepository = new TestFileRepository();
-        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.mp4"));
+        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.png"));
         var fileService = new FileService(testFileRepository);
         var testDir = List.of("root");
         var testFilter = new DateFilter();
@@ -320,7 +376,7 @@ public class FileServiceTests {
     void testGetYearsWithMonthsFilter() {
         // Arrange
         var testFileRepository = new TestFileRepository();
-        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.mp4"));
+        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.png"));
         var fileService = new FileService(testFileRepository);
         var testDir = List.of("root");
         var testFilter = new DateFilter();
@@ -338,7 +394,7 @@ public class FileServiceTests {
     void testGetYearsWithYearsFilter() {
         // Arrange
         var testFileRepository = new TestFileRepository();
-        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.mp4"));
+        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.png"));
         var fileService = new FileService(testFileRepository);
         var testDir = List.of("root");
         var testFilter = new DateFilter();
@@ -409,7 +465,7 @@ public class FileServiceTests {
     void testGetMonthsWithDaysFilter() {
         // Arrange
         var testFileRepository = new TestFileRepository();
-        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.mp4"));
+        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.png"));
         var fileService = new FileService(testFileRepository);
         var testDir = List.of("root");
         var testFilter = new DateFilter();
@@ -427,7 +483,7 @@ public class FileServiceTests {
     void testGetMonthsWithMonthsFilter() {
         // Arrange
         var testFileRepository = new TestFileRepository();
-        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.mp4"));
+        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.png"));
         var fileService = new FileService(testFileRepository);
         var testDir = List.of("root");
         var testFilter = new DateFilter();
@@ -445,7 +501,7 @@ public class FileServiceTests {
     void testGetMonthsWithYearsFilter() {
         // Arrange
         var testFileRepository = new TestFileRepository();
-        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.mp4"));
+        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.png"));
         var fileService = new FileService(testFileRepository);
         var testDir = List.of("root");
         var testFilter = new DateFilter();
@@ -454,6 +510,113 @@ public class FileServiceTests {
 
         // Act
         var actual = fileService.getMonths(testDir, testFilter);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetDays() {
+        // Arrange
+        var testFileRepository = new TestFileRepository();
+        // TODO png -> mp4
+        testFileRepository.setFiles(List.of("20210502_110954.png", "2020-04-09 21-11-40.JPG"));
+        var fileService = new FileService(testFileRepository);
+        var testDir = List.of("root");
+        var testFilter = new DateFilter();
+        var expected = List.of(2, 9);
+
+        // Act
+        var actual = fileService.getDays(testDir, testFilter);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetDaysOrder() {
+        // Arrange
+        var testFileRepository = new TestFileRepository();
+        // TODO png -> mp4
+        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.png"));
+        var fileService = new FileService(testFileRepository);
+        var testDir = List.of("root");
+        var testFilter = new DateFilter();
+        var expected = List.of(2, 9);
+
+        // Act
+        var actual = fileService.getDays(testDir, testFilter);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetDaysDouble() {
+        // Arrange
+        var testFileRepository = new TestFileRepository();
+        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "2020-04-09 21-11-50.JPG", "2021-05-10 21-11-50.JPG"));
+        var fileService = new FileService(testFileRepository);
+        var testDir = List.of("root");
+        var testFilter = new DateFilter();
+        var expected = List.of(9, 10);
+
+        // Act
+        var actual = fileService.getDays(testDir, testFilter);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetDaysWithDaysFilter() {
+        // Arrange
+        var testFileRepository = new TestFileRepository();
+        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.png"));
+        var fileService = new FileService(testFileRepository);
+        var testDir = List.of("root");
+        var testFilter = new DateFilter();
+        testFilter.days.add(9);
+        var expected = List.of(9);
+
+        // Act
+        var actual = fileService.getDays(testDir, testFilter);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetDaysWithMonthsFilter() {
+        // Arrange
+        var testFileRepository = new TestFileRepository();
+        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.png"));
+        var fileService = new FileService(testFileRepository);
+        var testDir = List.of("root");
+        var testFilter = new DateFilter();
+        testFilter.months.add(4);
+        var expected = List.of(9);
+
+        // Act
+        var actual = fileService.getDays(testDir, testFilter);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetDaysWithYearsFilter() {
+        // Arrange
+        var testFileRepository = new TestFileRepository();
+        testFileRepository.setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.png"));
+        var fileService = new FileService(testFileRepository);
+        var testDir = List.of("root");
+        var testFilter = new DateFilter();
+        testFilter.years.add(2020);
+        var expected = List.of(9);
+
+        // Act
+        var actual = fileService.getDays(testDir, testFilter);
 
         // Assert
         assertEquals(expected, actual);

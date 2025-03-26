@@ -9,7 +9,7 @@ public class EnglishFileNameExaminatorTests {
     public void isMatchFail() {
         // Arrange
         var e = new EnglishFileNameExaminator();
-        var testString = "20210502_110954.mp4";
+        var testString = "20210502_110954.png";
         var expected = false;
 
         // Act

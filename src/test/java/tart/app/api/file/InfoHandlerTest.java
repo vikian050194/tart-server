@@ -68,6 +68,9 @@ class InfoHandlerTest extends BaseApiTest {
         getFileRepository().setFiles(List.of("11112233_445566.jpeg", "11112233_445566.jpg", "11112233_445566.png"));
         var expectedStatus = 200;
         var expectedBody = new InfoResponse(List.of(), List.of("11112233_445566.jpeg", "11112233_445566.jpg", "11112233_445566.png"));
+        expectedBody.years.add(1111);
+        expectedBody.months.add(22);
+        expectedBody.days.add(33);
         var client = HttpClient.newHttpClient();
         var uri = new URI("%s/%s".formatted(baseAddress, "info"));
 
@@ -91,6 +94,9 @@ class InfoHandlerTest extends BaseApiTest {
         getFileRepository().setFiles(List.of("11112233_445566.png"));
         var expectedStatus = 200;
         var expectedBody = new InfoResponse(List.of("root"), List.of("11112233_445566.png"));
+        expectedBody.years.add(1111);
+        expectedBody.months.add(22);
+        expectedBody.days.add(33);
         var client = HttpClient.newHttpClient();
         var testDirName = "root";
         var uri = new URI("%s/%s/%s".formatted(baseAddress, "info", testDirName));
@@ -109,12 +115,14 @@ class InfoHandlerTest extends BaseApiTest {
     }
 
     @Test
-    void testYears() throws IOException, InterruptedException, URISyntaxException {
+    void testAllDateData() throws IOException, InterruptedException, URISyntaxException {
         // Arrange
         // TODO png -> mp4
         getFileRepository().setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.png"));
         var expectedStatus = 200;
         var expectedYears = List.of(2020, 2021);
+        var expectedMonths = List.of(4, 5);
+        var expectedDays = List.of(2, 9);
         var client = HttpClient.newHttpClient();
         var testDirName = "root";
         var uri = new URI("%s/%s/%s".formatted(baseAddress, "info", testDirName));
@@ -130,15 +138,18 @@ class InfoHandlerTest extends BaseApiTest {
         String body = response.body();
         var actualBody = om.readValue(body, InfoResponse.class);
         assertEquals(expectedYears, actualBody.years);
+        assertEquals(expectedMonths, actualBody.months);
+        assertEquals(expectedDays, actualBody.days);
     }
 
     @Test
     void testYearsFilter() throws IOException, InterruptedException, URISyntaxException {
         // Arrange
-        getFileRepository().setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.mp4"));
+        getFileRepository().setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.png"));
         var expectedStatus = 200;
         var expectedYears = List.of(2020);
         var expectedMonths = List.of(4);
+        var expectedDays = List.of(9);
         var client = HttpClient.newHttpClient();
         var testDirName = "root";
         var testYear = 2020;
@@ -156,15 +167,17 @@ class InfoHandlerTest extends BaseApiTest {
         var actualBody = om.readValue(body, InfoResponse.class);
         assertEquals(expectedYears, actualBody.years);
         assertEquals(expectedMonths, actualBody.months);
+        assertEquals(expectedDays, actualBody.days);
     }
 
     @Test
     void testMonthsFilter() throws IOException, InterruptedException, URISyntaxException {
         // Arrange
-        getFileRepository().setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.mp4"));
+        getFileRepository().setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.png"));
         var expectedStatus = 200;
         var expectedYears = List.of(2020);
         var expectedMonths = List.of(4);
+        var expectedDays = List.of(9);
         var client = HttpClient.newHttpClient();
         var testDirName = "root";
         var testMonth = 4;
@@ -182,5 +195,34 @@ class InfoHandlerTest extends BaseApiTest {
         var actualBody = om.readValue(body, InfoResponse.class);
         assertEquals(expectedYears, actualBody.years);
         assertEquals(expectedMonths, actualBody.months);
+        assertEquals(expectedDays, actualBody.days);
+    }
+
+    @Test
+    void testDaysFilter() throws IOException, InterruptedException, URISyntaxException {
+        // Arrange
+        getFileRepository().setFiles(List.of("2020-04-09 21-11-40.JPG", "20210502_110954.png"));
+        var expectedStatus = 200;
+        var expectedYears = List.of(2020);
+        var expectedMonths = List.of(4);
+        var expectedDays = List.of(9);
+        var client = HttpClient.newHttpClient();
+        var testDirName = "root";
+        var testDay = 9;
+        var uri = new URI("%s/%s/%s?days=%s".formatted(baseAddress, "info", testDirName, testDay));
+
+        // Act
+        var response = client.send(
+                HttpRequest.newBuilder().GET().uri(uri).build(),
+                BodyHandlers.ofString());
+
+        // Assert
+        assertEquals(expectedStatus, response.statusCode());
+        var om = new ObjectMapper();
+        String body = response.body();
+        var actualBody = om.readValue(body, InfoResponse.class);
+        assertEquals(expectedYears, actualBody.years);
+        assertEquals(expectedMonths, actualBody.months);
+        assertEquals(expectedDays, actualBody.days);
     }
 }

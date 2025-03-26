@@ -23,7 +23,7 @@ public class RussianFileNameExaminatorTests {
     public void isMatchSuccess() {
         // Arrange
         var e = new RussianFileNameExaminator();
-        var testString = "20210502_110954.mp4";
+        var testString = "20210502_110954.png";
         var expected = true;
 
         // Act
@@ -37,7 +37,7 @@ public class RussianFileNameExaminatorTests {
     public void parserGetYear() {
         // Arrange
         var e = new RussianFileNameExaminator();
-        var testString = "20210502_110954.mp4";
+        var testString = "20210502_110954.png";
         var expected = 2021;
 
         // Act
@@ -52,7 +52,7 @@ public class RussianFileNameExaminatorTests {
     public void parserGetMonth() {
         // Arrange
         var e = new RussianFileNameExaminator();
-        var testString = "20210502_110954.mp4";
+        var testString = "20210502_110954.png";
         var expected = 5;
 
         // Act
@@ -67,7 +67,7 @@ public class RussianFileNameExaminatorTests {
     public void parserGetDay() {
         // Arrange
         var e = new RussianFileNameExaminator();
-        var testString = "20210502_110954.mp4";
+        var testString = "20210502_110954.png";
         var expected = 2;
 
         // Act

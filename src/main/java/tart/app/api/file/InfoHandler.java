@@ -66,6 +66,8 @@ public class InfoHandler extends Handler {
         filter.years.addAll(yearsFilterValues);
         var monthsFilterValues = params.getOrDefault("months", Collections.<String>emptyList()).stream().map(Integer::valueOf).toList();
         filter.months.addAll(monthsFilterValues);
+        var daysFilterValues = params.getOrDefault("days", Collections.<String>emptyList()).stream().map(Integer::valueOf).toList();
+        filter.days.addAll(daysFilterValues);
 
         var fullPath = uri.getPath();
         var dirPath = fullPath.substring(url().length());
@@ -76,9 +78,11 @@ public class InfoHandler extends Handler {
         var files = fileService.getFiles(path, filter);
         var years = fileService.getYears(path, filter);
         var months = fileService.getMonths(path, filter);
+        var days = fileService.getDays(path, filter);
         var r = new InfoResponse(dirs, files);
         r.years.addAll(years);
         r.months.addAll(months);
+        r.days.addAll(days);
         return new ResponseEntity<>(r,
                 getHeaders(Constants.CONTENT_TYPE, Constants.APPLICATION_JSON), StatusCode.OK);
 
