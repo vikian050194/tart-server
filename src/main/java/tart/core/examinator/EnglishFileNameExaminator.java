@@ -18,7 +18,7 @@ public class EnglishFileNameExaminator extends FileNameExaminator<EnglishFileNam
 
         private EnglishFileNameParser(String string) {
             this.string = string;
-            chunks = List.of(string.split("[ -\\.]"));
+            chunks = List.of(string.split("[_ -\\.]"));
         }
 
         @Override
