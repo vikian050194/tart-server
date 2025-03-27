@@ -77,4 +77,49 @@ public class RussianFileNameExaminatorTests {
         // Assert
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void parserGetHour() {
+        // Arrange
+        var e = new RussianFileNameExaminator();
+        var testString = "20210502_110954.png";
+        var expected = 11;
+
+        // Act
+        var parser = e.getNameParser(testString);
+        var actual = parser.getHour();
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void parserGetMinute() {
+        // Arrange
+        var e = new RussianFileNameExaminator();
+        var testString = "20210502_110954.png";
+        var expected = 9;
+
+        // Act
+        var parser = e.getNameParser(testString);
+        var actual = parser.getMinute();
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void parserGetSecond() {
+        // Arrange
+        var e = new RussianFileNameExaminator();
+        var testString = "20210502_110954.png";
+        var expected = 54;
+
+        // Act
+        var parser = e.getNameParser(testString);
+        var actual = parser.getSecond();
+
+        // Assert
+        assertEquals(expected, actual);
+    }
 }

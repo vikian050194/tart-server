@@ -77,4 +77,49 @@ public class EnglishFileNameExaminatorTests {
         // Assert
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void parserGetHour() {
+        // Arrange
+        var e = new EnglishFileNameExaminator();
+        var testString = "2020-04-09 21-11-40.JPG";
+        var expected = 21;
+
+        // Act
+        var parser = e.getNameParser(testString);
+        var actual = parser.getHour();
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void parserGetMinute() {
+        // Arrange
+        var e = new EnglishFileNameExaminator();
+        var testString = "2020-04-09 21-11-40.JPG";
+        var expected = 11;
+
+        // Act
+        var parser = e.getNameParser(testString);
+        var actual = parser.getMinute();
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void parserGetSecond() {
+        // Arrange
+        var e = new EnglishFileNameExaminator();
+        var testString = "2020-04-09 21-11-40.JPG";
+        var expected = 40;
+
+        // Act
+        var parser = e.getNameParser(testString);
+        var actual = parser.getSecond();
+
+        // Assert
+        assertEquals(expected, actual);
+    }
 }

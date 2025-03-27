@@ -66,6 +66,22 @@ public class FileServiceTests {
     }
 
     @Test
+    void testGetDirectoriesOrder() throws IOException, InterruptedException {
+        // Arrange
+        var testFileRepository = new TestFileRepository();
+        testFileRepository.setDirectories(List.of("a", "b", "c"));
+        var testPath = Collections.<String>emptyList();
+        var fileService = new FileService(testFileRepository);
+        var expected = List.of("a", "b", "c");
+
+        // Act
+        var actual = fileService.getDirectories(testPath);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
     void testGetDirectoriesFiltersSystemDir() throws IOException, InterruptedException {
         // Arrange
         var testFileRepository = new TestFileRepository();
@@ -108,6 +124,132 @@ public class FileServiceTests {
         var testFilter = new DateFilter();
         // TODO png -> mp4
         var expected = List.of("11112233_445566.jpeg", "11112233_445566.jpg", "11112233_445566.png");
+
+        // Act
+        var actual = fileService.getFiles(testPath, testFilter);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetFilesOrderByYear() throws IOException, InterruptedException {
+        // Arrange
+        var testFileRepository = new TestFileRepository();
+        // TODO add mp4
+        testFileRepository.setFiles(List.of("20250510_000000.jpg", "20240408_000000.jpg"));
+        var testPath = Collections.<String>emptyList();
+        var fileService = new FileService(testFileRepository);
+        var testFilter = new DateFilter();
+        var expected = List.of("20240408_000000.jpg", "20250510_000000.jpg");
+
+        // Act
+        var actual = fileService.getFiles(testPath, testFilter);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetFilesOrderByMonth() throws IOException, InterruptedException {
+        // Arrange
+        var testFileRepository = new TestFileRepository();
+        // TODO add mp4
+        testFileRepository.setFiles(List.of("20250510_000000.jpg", "20250408_000000.jpg"));
+        var testPath = Collections.<String>emptyList();
+        var fileService = new FileService(testFileRepository);
+        var testFilter = new DateFilter();
+        var expected = List.of("20250408_000000.jpg", "20250510_000000.jpg");
+
+        // Act
+        var actual = fileService.getFiles(testPath, testFilter);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetFilesOrderByDay() throws IOException, InterruptedException {
+        // Arrange
+        var testFileRepository = new TestFileRepository();
+        // TODO add mp4
+        testFileRepository.setFiles(List.of("20250416_000000.jpg", "20250408_000000.jpg"));
+        var testPath = Collections.<String>emptyList();
+        var fileService = new FileService(testFileRepository);
+        var testFilter = new DateFilter();
+        var expected = List.of("20250408_000000.jpg", "20250416_000000.jpg");
+
+        // Act
+        var actual = fileService.getFiles(testPath, testFilter);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetFilesOrderByHour() throws IOException, InterruptedException {
+        // Arrange
+        var testFileRepository = new TestFileRepository();
+        // TODO add mp4
+        testFileRepository.setFiles(List.of("20250408_220000.jpg", "20250408_110000.jpg"));
+        var testPath = Collections.<String>emptyList();
+        var fileService = new FileService(testFileRepository);
+        var testFilter = new DateFilter();
+        var expected = List.of("20250408_110000.jpg", "20250408_220000.jpg");
+
+        // Act
+        var actual = fileService.getFiles(testPath, testFilter);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetFilesOrderByMinute() throws IOException, InterruptedException {
+        // Arrange
+        var testFileRepository = new TestFileRepository();
+        // TODO add mp4
+        testFileRepository.setFiles(List.of("20250408_002200.jpg", "20250408_001100.jpg"));
+        var testPath = Collections.<String>emptyList();
+        var fileService = new FileService(testFileRepository);
+        var testFilter = new DateFilter();
+        var expected = List.of("20250408_001100.jpg", "20250408_002200.jpg");
+
+        // Act
+        var actual = fileService.getFiles(testPath, testFilter);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetFilesOrderBySecond() throws IOException, InterruptedException {
+        // Arrange
+        var testFileRepository = new TestFileRepository();
+        // TODO add mp4
+        testFileRepository.setFiles(List.of("20250408_000022.jpg", "20250408_000011.jpg"));
+        var testPath = Collections.<String>emptyList();
+        var fileService = new FileService(testFileRepository);
+        var testFilter = new DateFilter();
+        var expected = List.of("20250408_000011.jpg", "20250408_000022.jpg");
+
+        // Act
+        var actual = fileService.getFiles(testPath, testFilter);
+
+        // Assert
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetFilesOrderByShort() throws IOException, InterruptedException {
+        // Arrange
+        var testFileRepository = new TestFileRepository();
+        // TODO add mp4
+        testFileRepository.setFiles(List.of("20250408_000000 (0).jpg", "20250408_000000.jpg"));
+        var testPath = Collections.<String>emptyList();
+        var fileService = new FileService(testFileRepository);
+        var testFilter = new DateFilter();
+        var expected = List.of("20250408_000000 (0).jpg", "20250408_000000.jpg");
 
         // Act
         var actual = fileService.getFiles(testPath, testFilter);

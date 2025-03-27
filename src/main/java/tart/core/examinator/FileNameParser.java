@@ -12,4 +12,10 @@ public abstract class FileNameParser {
     public abstract int getMonth();
 
     public abstract int getDay();
+
+    public abstract int getHour();
+
+    public abstract int getMinute();
+
+    public abstract int getSecond();
 }

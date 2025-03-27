@@ -82,6 +82,7 @@ public class FileService {
         files = files.filter(f -> systemMatcher.isMatch(f) == showSystemFiles());
         files = files.filter(f -> matchers.stream().anyMatch(m -> m.isMatch(f)));
         files = files.filter(f -> filterFile(filter, f));
+        files = files.sorted(new FileComparator());
         return files.toList();
     }
 

@@ -9,10 +9,17 @@ public class RussianFileNameExaminator extends FileNameExaminator<RussianFileNam
     public class RussianFileNameParser extends FileNameParser {
 
         private static final int DATE_INDEX = 0;
+        private static final int TIME_INDEX = 1;
+
         private static final int START_INDEX = 0;
+
         private static final int YEAR_SIZE = 4;
         private static final int MONTH_SIZE = 2;
         private static final int DAY_SIZE = 2;
+
+        private static final int HOUR_SIZE = 2;
+        private static final int MINUTE_SIZE = 2;
+        private static final int SECOND_SIZE = 2;
 
         private RussianFileNameParser(String string) {
             this.string = string;
@@ -27,15 +34,34 @@ public class RussianFileNameExaminator extends FileNameExaminator<RussianFileNam
         @Override
         public int getMonth() {
             var beginIndex = START_INDEX + YEAR_SIZE;
-            var endIndex = START_INDEX + YEAR_SIZE + MONTH_SIZE;
+            var endIndex = beginIndex + MONTH_SIZE;
             return Integer.parseInt(chunks.get(DATE_INDEX).substring(beginIndex, endIndex));
         }
 
         @Override
         public int getDay() {
             var beginIndex = START_INDEX + YEAR_SIZE + MONTH_SIZE;
-            var endIndex = START_INDEX + YEAR_SIZE + MONTH_SIZE + DAY_SIZE;
+            var endIndex = beginIndex + DAY_SIZE;
             return Integer.parseInt(chunks.get(DATE_INDEX).substring(beginIndex, endIndex));
+        }
+
+        @Override
+        public int getHour() {
+            return Integer.parseInt(chunks.get(TIME_INDEX).substring(START_INDEX, HOUR_SIZE));
+        }
+
+        @Override
+        public int getMinute() {
+            var beginIndex = START_INDEX + HOUR_SIZE;
+            var endIndex = beginIndex + MINUTE_SIZE;
+            return Integer.parseInt(chunks.get(TIME_INDEX).substring(beginIndex, endIndex));
+        }
+
+        @Override
+        public int getSecond() {
+            var beginIndex = START_INDEX + HOUR_SIZE + MINUTE_SIZE;
+            var endIndex = beginIndex + SECOND_SIZE;
+            return Integer.parseInt(chunks.get(TIME_INDEX).substring(beginIndex, endIndex));
         }
 
     }
