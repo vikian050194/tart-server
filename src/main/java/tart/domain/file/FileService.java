@@ -4,16 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import tart.core.examinator.EnglishFileNameExaminator;
-import tart.core.examinator.FileNameExaminator;
-import tart.core.examinator.FileNameParser;
-import tart.core.examinator.RussianFileNameExaminator;
+import tart.core.examinator.*;
 import tart.core.matcher.FileMatcher;
-import tart.core.matcher.type.JpegFileMatcher;
-import tart.core.matcher.type.JpgFileMatcher;
-import tart.core.matcher.type.Mp4FileMatcher;
-import tart.core.matcher.type.PngFileMatcher;
-import tart.core.matcher.type.SystemFileMatcher;
+import tart.core.matcher.type.*;
 
 public class FileService {
 
