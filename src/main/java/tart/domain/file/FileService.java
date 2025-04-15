@@ -47,9 +47,10 @@ public class FileService {
             return getDirectories(rootPath);
         }
         var systemDirPrefix = ".";
-        var dirs = imageRepository.getDirectories(path);
-        var filteredDirs = dirs.stream().filter(d -> d.startsWith(systemDirPrefix) == showSystemDirs()).toList();
-        return filteredDirs;
+        var dirs = imageRepository.getDirectories(path).stream();
+        dirs = dirs.filter(d -> d.startsWith(systemDirPrefix) == showSystemDirs());
+        dirs = dirs.sorted();
+        return dirs.toList();
     }
 
     private boolean filterFile(DateFilter filter, String file) {

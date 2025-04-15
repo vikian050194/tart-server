@@ -69,7 +69,7 @@ public class FileServiceTests {
     void testGetDirectoriesOrder() throws IOException, InterruptedException {
         // Arrange
         var testFileRepository = new TestFileRepository();
-        testFileRepository.setDirectories(List.of("a", "b", "c"));
+        testFileRepository.setDirectories(List.of("c", "a", "b"));
         var testPath = Collections.<String>emptyList();
         var fileService = new FileService(testFileRepository);
         var expected = List.of("a", "b", "c");
