@@ -79,7 +79,6 @@ public final class App {
 
     public static void main(String[] args) throws IOException {
         var httpPort = Configuration.port();
-
         var app = new App(httpPort, RunMode.DEV);
         var dependencyFactory = new DefaultDependencyFactory();
         app.init(dependencyFactory);

@@ -30,6 +30,7 @@ public class GlobalExceptionHandler {
 
     private ErrorResponse getErrorResponse(Throwable throwable, HttpExchange exchange) throws IOException {
         ErrorResponse response;
+        // TODO use pattern matching
         if (throwable instanceof InvalidRequestException) {
             InvalidRequestException exc = (InvalidRequestException) throwable;
             response = new ErrorResponse(exc.getCode(), exc.getMessage());

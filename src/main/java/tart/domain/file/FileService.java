@@ -113,6 +113,7 @@ public class FileService {
         return null;
     }
 
+    // TODO extract common code and re-use in getMonths and getDays
     public List<Integer> getYears(List<String> path, DateFilter filter) {
         if (path.isEmpty()) {
             var rootPath = List.of(File.separator);
