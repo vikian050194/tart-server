@@ -5,7 +5,7 @@ import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import tart.app.api.Handler;
 import tart.app.api.file.*;
 import tart.app.api.hello.HelloHandler;
@@ -46,7 +46,7 @@ public final class App {
     }
 
     public void init(DependencyFactory df) {
-        var handlers = new LinkedList<Handler>();
+        var handlers = new ArrayList<Handler>(4);
         handlers.add(new RegistrationHandler(df.getUserService(), df.getObjectMapper(),
                 df.getErrorHandler()));
         handlers.add(new InfoHandler(df.getFileService(), df.getObjectMapper(),

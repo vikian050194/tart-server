@@ -2,7 +2,7 @@ package tart.domain.file;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import tart.core.examinator.*;
 import tart.core.matcher.FileMatcher;
@@ -120,7 +120,7 @@ public class FileService {
             return getYears(rootPath, filter);
         }
         var files = getFiles(path, filter);
-        var years = new LinkedList<Integer>();
+        var years = new ArrayList<Integer>();
         for (String file : files) {
             var parser = getFileNameParser(file);
             if (parser == null) {
@@ -141,7 +141,7 @@ public class FileService {
             return getMonths(rootPath, filter);
         }
         var files = getFiles(path, filter);
-        var months = new LinkedList<Integer>();
+        var months = new ArrayList<Integer>(12);
         for (String file : files) {
             var parser = getFileNameParser(file);
             if (parser == null) {
@@ -162,7 +162,7 @@ public class FileService {
             return getDays(rootPath, filter);
         }
         var files = getFiles(path, filter);
-        var days = new LinkedList<Integer>();
+        var days = new ArrayList<Integer>(31);
         for (String file : files) {
             var parser = getFileNameParser(file);
             if (parser == null) {
