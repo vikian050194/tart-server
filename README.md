@@ -1,4 +1,4 @@
-# tart
+# tart-server
 
 [![MIT license][license-badge]][license-url]
 [![Maintenance status][status-badge]][status-url]
@@ -6,16 +6,9 @@
 
 ## About
 
-**tart** is desktop application for images viewing, searching, ordering and tagging.
+Backend. That's it.
 
 You can take a look at [list of questions and problems](./QA.md) that I faced during development.
-
-Also there is [todo list](./TODO.md).
-
-## Motivation
-
-About 15k files that I need to review and sort, probably delete failed photos and unnecessary duplications.
-So I need some analog of [TagSpaces][tagspaces-url], but smaller and it should have features set according to personal workflow.
 
 ## Requirements
 
@@ -35,17 +28,8 @@ TODO
 
 **From sources**
 
-1. Clone repo `git clone https://github.com/vikian050194/tart.git`;
+1. Clone repo `git clone https://github.com/vikian050194/tart-server.git`;
 2. TODO
-
-## Usage
-
-1. Run the app;
-2. Press `Ctrl+O` to open source directory;
-3. Use date (year, month and day) filters;
-4. Press arrows (left and right) to open next and previous image;
-5. Select "move to" directory (up to 10);
-6. Press `0` - `9` to move current image there.
 
 ### Configuration
 
@@ -55,13 +39,11 @@ TODO
 
 TODO
 
-[status-url]: https://github.com/vikian050194/tart/pulse
-[status-badge]: https://img.shields.io/github/last-commit/vikian050194/tart.svg
+[status-url]: https://github.com/vikian050194/tart-server/pulse
+[status-badge]: https://img.shields.io/github/last-commit/vikian050194/tart-server.svg
 
-[license-url]: https://github.com/vikian050194/tart/blob/master/LICENSE
-[license-badge]: https://img.shields.io/github/license/vikian050194/tart.svg
+[license-url]: https://github.com/vikian050194/tart-server/blob/master/LICENSE
+[license-badge]: https://img.shields.io/github/license/vikian050194/tart-server.svg
 
-[coverage-url]: https://codecov.io/gh/vikian050194/tart
-[coverage-badge]: https://img.shields.io/codecov/c/github/vikian050194/tart
-
-[tagspaces-url]: https://www.tagspaces.org/
+[coverage-url]: https://codecov.io/gh/vikian050194/tart-server
+[coverage-badge]: https://img.shields.io/codecov/c/github/vikian050194/tart-server
