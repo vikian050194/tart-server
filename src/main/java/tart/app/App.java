@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
+import java.util.List;
 import tart.app.api.Handler;
 import tart.app.api.file.*;
 import tart.app.api.ping.PingHandler;
@@ -60,6 +61,15 @@ public final class App {
         var app = new App(httpPort, RunMode.DEV);
         var dependencyFactory = new DefaultDependencyFactory();
         app.init(dependencyFactory);
+        var limit = 100;
+        var source = List.of("home", "kirill", "yandex", "Photos", "2026", "08");
+        var target = List.of("home", "kirill", "yandex", "Photos");
+        System.out.println("MOVE");
+        dependencyFactory.getFileService().moveByDate(source, target, limit);
+        System.out.println("LOWER");
+        dependencyFactory.getFileService().renameToLowerCase(source, limit);
+        System.out.println("NORMALIZE");
+        dependencyFactory.getFileService().renameToRussian(source, limit);
         app.start();
     }
 }

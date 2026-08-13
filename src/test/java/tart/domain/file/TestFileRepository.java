@@ -38,12 +38,27 @@ public class TestFileRepository implements FileRepository {
     }
 
     @Override
-    public boolean update(List<String> oldPath, List<String> newPath) {
+    public boolean move(List<String> source, List<String> target) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public boolean delete(List<String> path) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean makeDirectory(List<String> path) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean exists(List<String> path) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<String> getAbsoluteFiles(List<String> path) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

@@ -27,6 +27,11 @@ public class RussianFileNameExaminator extends FileNameExaminator<RussianFileNam
         }
 
         @Override
+        public String getExtension() {
+            return chunks.getLast();
+        }
+
+        @Override
         public int getYear() {
             return Integer.parseInt(chunks.get(DATE_INDEX).substring(START_INDEX, YEAR_SIZE));
         }

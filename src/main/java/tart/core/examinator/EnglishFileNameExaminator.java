@@ -22,6 +22,11 @@ public class EnglishFileNameExaminator extends FileNameExaminator<EnglishFileNam
         }
 
         @Override
+        public String getExtension() {
+            return chunks.getLast();
+        }
+        
+        @Override
         public int getYear() {
             return Integer.parseInt(chunks.get(YEAR_INDEX));
         }

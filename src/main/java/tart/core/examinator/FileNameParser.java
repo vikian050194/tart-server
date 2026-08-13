@@ -7,6 +7,8 @@ public abstract class FileNameParser {
     protected String string;
     protected List<String> chunks;
 
+    public abstract String getExtension();
+
     public abstract int getYear();
 
     public abstract int getMonth();
